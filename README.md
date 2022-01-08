@@ -29,7 +29,7 @@ NTTs represent inherently personal possessions (material or immaterial), such as
 
 NTTs are non-tradable and non-fungible tokens, they are unique and they belong to you.
 
-The following standard allows for the implementation of a standard API for NTTs within smart contracts. **NTTs are proofs of possession**.
+<u>**NTTs are proofs of possession**</u>.
 
 ## Specification
 
