@@ -1,16 +1,35 @@
-# Simple Summary
+# Non-Tradable Token Standard
+
+| Author         | Omar Aflak                                      |
+| Discussions-To | https://github.com/ethereum/eips/issues/#number |
+| Status         | Draft                                           |
+| Type           | Standards Track                                 |
+| Category       | ERC                                             |
+| Created        | 2022-01-05                                      |
+| Requires       | [165](https://eips.ethereum.org/EIPS/eip-165)   |
+
+<!-- AUTO-GENERATED-CONTENT:START (TOC) -->
+- [Simple Summary](#simple-summary)
+- [Abstract](#abstract)
+- [Specification](#specification)
+  - [Extensions](#extensions)
+    - [Metadata](#metadata)
+    - [Delegation](#delegation)
+<!-- AUTO-GENERATED-CONTENT:END -->
+
+## Simple Summary
 
 A standard interface for non-tradable tokens.
 
-# Abstract
+## Abstract
 
-The following standard allows for the implementation of a standard API for NTTs within smart contracts.
+NTTs represent inherently personal possessions (material or immaterial), such as school diplomas, online training certificates, government issued documents (national id, driving licence, visa, etc.), home address, badges, and so on.
 
-NTTs represent inherently personal possessions (material or immaterial), such as school diplomas, online training certificates, government issued documents (national id, driving licence, visa, etc.), services (insurance, ...), proof of address, proof of ownership, and so on.
+NTTs are non-tradable and non-fungible tokens, they are unique and they belong to you.
 
-NTTs are non-tradable and non-fungible, they are unique and they belong to you.
+The following standard allows for the implementation of a standard API for NTTs within smart contracts. **NTTs are proofs of possession**.
 
-# Specification
+## Specification
 
 <!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/INTT.sol) -->
 <!-- The below code snippet is automatically added from ./contracts/INTT.sol -->
@@ -36,9 +55,9 @@ interface INTT is IERC165 {
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
 
-## Extensions
+### Extensions
 
-### Metadata
+#### Metadata
 
 <!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/INTTMetadata.sol) -->
 <!-- The below code snippet is automatically added from ./contracts/INTTMetadata.sol -->
@@ -63,7 +82,7 @@ interface INTTMetadata {
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
 
-### Delegation
+#### Delegation
 
 <!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/INTTDelegate.sol) -->
 <!-- The below code snippet is automatically added from ./contracts/INTTDelegate.sol -->
