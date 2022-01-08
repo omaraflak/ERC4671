@@ -17,7 +17,7 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
     string private _symbol;
 
     // Contract creator
-    address _creator;
+    address private _creator;
 
     constructor (string memory name_, string memory symbol_) {
         _name = name_;
