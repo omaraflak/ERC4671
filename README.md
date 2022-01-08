@@ -12,17 +12,17 @@ NTTs are non-tradable and non-fungible, they are unique and they belong to you.
 
 # Specification
 
-<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./contracts/INTT.sol) -->
+<!-- MARKDOWN-AUTO-DOCS:START (CODE:syntax=solidity&src=./contracts/INTT.sol) -->
 <!-- MARKDOWN-AUTO-DOCS:END -->
 
 ## Extensions
 
 ### Metadata
 
-<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./contracts/INTTMetadata.sol) -->
+<!-- MARKDOWN-AUTO-DOCS:START (CODE:syntax=solidity&src=./contracts/INTTMetadata.sol) -->
 <!-- MARKDOWN-AUTO-DOCS:END -->
 
 ### Delegation
 
-<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./contracts/INTTDelegate.sol) -->
+<!-- MARKDOWN-AUTO-DOCS:START (CODE:syntax=solidity&src=./contracts/INTTDelegate.sol) -->
 <!-- MARKDOWN-AUTO-DOCS:END -->
