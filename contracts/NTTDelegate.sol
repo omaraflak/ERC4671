@@ -9,7 +9,7 @@ abstract contract NTTDelegate is NTT, INTTDelegate {
     // Mapping from operator to list of owners
     mapping (address => mapping(address => bool)) _allowed;
 
-    /// @notice Grant minting rights to `operator` for `owner`
+    /// @notice Grant one-time minting right to `operator` for `owner`
     /// @param operator Address allowed to mint
     /// @param owner Address for whom `operator` is allowed to mint
     function delegate(address operator, address owner) public virtual override {
