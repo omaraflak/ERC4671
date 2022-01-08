@@ -25,8 +25,8 @@ abstract contract NTTDelegate is NTT, INTTDelegate {
         _allowed[operator][owner] = true;
     }
 
-    /// @notice Mint a NTT
-    /// @param owner Address for whom the NTT is minted
+    /// @notice Mint a token
+    /// @param owner Address for whom the token is minted
     function mint(address owner) public virtual override {
         bool isCreator = _isCreator();
         require(

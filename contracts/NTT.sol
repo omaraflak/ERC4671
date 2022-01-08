@@ -7,7 +7,7 @@ import "./INTT.sol";
 import "./INTTMetadata.sol";
 
 abstract contract NTT is INTT, INTTMetadata, ERC165 {
-    // Mapping from owner to NTTs
+    // Mapping from owner to tokens
     mapping (address => bool[]) private _balances;
 
     // Token name
@@ -25,37 +25,37 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
         _creator = msg.sender;
     }
 
-    /// @notice Count all NTTs assigned to an owner
+    /// @notice Count all tokens assigned to an owner
     /// @param owner Address for whom to query the balance
-    /// @return Number of NTTs owned by `owner`
+    /// @return Number of tokens owned by `owner`
     function balanceOf(address owner) public view virtual override returns (uint256) {
         require(owner != address(0), "balance query for the zero address");
         return _balances[owner].length;
     }
 
-    /// @notice Check if a NTT is hasn't been invalidated
-    /// @param owner Address for whom to check the NTT validity
-    /// @return True if the NTT is valid, False otherwise
+    /// @notice Check if a token is hasn't been invalidated
+    /// @param owner Address for whom to check the token validity
+    /// @return True if the token is valid, False otherwise
     function isValid(address owner, uint256 index) public view virtual override returns (bool) {
         bool[] storage tokens = _balances[owner];
         require(index < tokens.length, "NTT does not exist");
         return tokens[index];
     }
 
-    /// @return Descriptive name of the NTTs in this contract
+    /// @return Descriptive name of the tokens in this contract
     function name() public view virtual override returns (string memory) {
         return _name;
     }
 
-    /// @return An abbreviated name of the NTTs in this contract
+    /// @return An abbreviated name of the tokens in this contract
     function symbol() public view virtual override returns (string memory) {
         return _symbol;
     }
 
-    /// @notice Fetch API link containing information for an NTT
-    /// @param owner Address of the NTT's owner
-    /// @param index Index of the NTT
-    /// @return API link to query for the NTT
+    /// @notice Fetch API link containing information for a token
+    /// @param owner Address of the token's owner
+    /// @param index Index of the token
+    /// @return API link to query for the token's data
     function uri(address owner, uint256 index) public view virtual override returns (string memory) {
         bool[] storage tokens = _balances[owner];
         require(index < tokens.length, "NTT does not exist");
@@ -69,8 +69,8 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
             super.supportsInterface(interfaceId);
     }
 
-    /// @notice Mark the NTT as invalidated
-    /// @param owner Address for whom to invalidate the NTT
+    /// @notice Mark the token as invalidated
+    /// @param owner Address for whom to invalidate the token
     function _invalidate(address owner, uint256 index) internal virtual {
         bool[] storage tokens = _balances[owner];
         require(index < tokens.length, "NTT does not exist");

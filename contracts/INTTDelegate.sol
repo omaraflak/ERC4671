@@ -9,7 +9,7 @@ interface INTTDelegate {
     /// @param owner Address for whom `operator` is allowed to mint
     function delegate(address operator, address owner) external;
 
-    /// @notice Mint a NTT
-    /// @param owner Address for whom the NTT is minted
+    /// @notice Mint a token
+    /// @param owner Address for whom the token is minted
     function mint(address owner) external;
 }
