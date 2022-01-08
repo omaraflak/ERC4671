@@ -1,0 +1,14 @@
+{
+  "name": "ntt",
+  "version": "1.0.0",
+  "description": "Non-Tradable Token Standard",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Omar Aflak",
+  "license": "MIT",
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.4.1"
+  }
+}
