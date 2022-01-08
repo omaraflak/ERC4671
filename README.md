@@ -1,6 +1,6 @@
 # Non-Tradable Token Standard
 
-| Key            | Value                                           |
+| <!-- -->       | <!-- -->                                        |
 |----------------|-------------------------------------------------|
 | Author         | Omar Aflak                                      |
 | Discussions-To | https://github.com/ethereum/eips/issues/#number |
