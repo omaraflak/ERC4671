@@ -7,8 +7,14 @@ import "./INTT.sol";
 import "./INTTMetadata.sol";
 
 abstract contract NTT is INTT, INTTMetadata, ERC165 {
+    // Token data
+    struct Token {
+        address issuer;
+        bool valid;
+    }
+
     // Mapping from owner to tokens
-    mapping (address => bool[]) private _balances;
+    mapping (address => Token[]) private _balances;
 
     // Token name
     string private _name;
@@ -37,9 +43,15 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
     /// @param owner Address for whom to check the token validity
     /// @return True if the token is valid, False otherwise
     function isValid(address owner, uint256 index) public view virtual override returns (bool) {
-        bool[] storage tokens = _balances[owner];
-        require(index < tokens.length, "NTT does not exist");
-        return tokens[index];
+        return _getOrRevert(owner, index).valid;
+    }
+
+    /// @notice Get the issuer of a token
+    /// @param owner Address for whom to check the token issuer
+    /// @param owner Index of the token
+    /// @return Address of the issuer
+    function issuerOf(address owner, uint256 index) public view virtual override returns (address) {
+        return _getOrRevert(owner, index).issuer;
     }
 
     /// @return Descriptive name of the tokens in this contract
@@ -57,8 +69,7 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
     /// @param index Index of the token
     /// @return API link to query for the token's data
     function uri(address owner, uint256 index) public view virtual override returns (string memory) {
-        bool[] storage tokens = _balances[owner];
-        require(index < tokens.length, "NTT does not exist");
+        _getOrRevert(owner, index);
         return _baseURI();
     }
 
@@ -72,16 +83,15 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
     /// @notice Mark the token as invalidated
     /// @param owner Address for whom to invalidate the token
     function _invalidate(address owner, uint256 index) internal virtual {
-        bool[] storage tokens = _balances[owner];
-        require(index < tokens.length, "NTT does not exist");
-        tokens[index] = false;
+        Token storage token = _getOrRevert(owner, index);
+        token.valid = false;
     }
 
     /// @notice Mint a new token
-    /// @param owner Address to whom to assign the token
+    /// @param owner Address for whom to assign the token
     function _mint(address owner) internal virtual {
-        bool[] storage tokens = _balances[owner];
-        tokens.push(true);
+        Token[] storage tokens = _balances[owner];
+        tokens.push(Token(msg.sender, true));
     }
 
     function _baseURI() internal view virtual returns (string memory) {
@@ -90,5 +100,11 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
 
     function _isCreator() internal view virtual returns (bool) {
         return msg.sender == _creator;
+    }
+
+    function _getOrRevert(address owner, uint256 index) internal view virtual returns (Token storage) {
+        Token[] storage tokens = _balances[owner];
+        require(index < tokens.length, "NTT does not exist");
+        return tokens[index];
     }
 }

@@ -15,4 +15,10 @@ interface INTT is IERC165 {
     /// @param index Index of the token
     /// @return True if the token is valid, False otherwise
     function isValid(address owner, uint256 index) external view returns (bool);
+
+    /// @notice Get the issuer of a token
+    /// @param owner Address for whom to check the token issuer
+    /// @param owner Index of the token
+    /// @return Address of the issuer
+    function issuerOf(address owner, uint256 index) external view returns (address);
 }
