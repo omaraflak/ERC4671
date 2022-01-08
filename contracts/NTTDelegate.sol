@@ -30,7 +30,7 @@ abstract contract NTTDelegate is NTT, INTTDelegate {
     function mint(address owner) public virtual override {
         require(
             msg.sender == _creator || _allowed[msg.sender][owner],
-            "Only contract creator or delegare are allowed to mint"
+            "Only contract creator or delegate are allowed to mint"
         );
         _mint(owner);
     }
