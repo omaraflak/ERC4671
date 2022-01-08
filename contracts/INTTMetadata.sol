@@ -12,6 +12,6 @@ interface INTTMetadata {
     /// @notice Fetch API link containing information for a token
     /// @param owner Address of the token's owner
     /// @param index Index of the token
-    /// @return API link to query for the token's data
+    /// @return Link to query for the token's data
     function uri(address owner, uint256 index) external view returns (string memory);
 }
