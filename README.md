@@ -13,6 +13,7 @@
 <!-- AUTO-GENERATED-CONTENT:START (TOC) -->
 - [Simple Summary](#simple-summary)
 - [Abstract](#abstract)
+- [Motivation](#motivation)
 - [Specification](#specification)
   - [Extensions](#extensions)
     - [Metadata](#metadata)
@@ -33,6 +34,10 @@ NTTs represent inherently personal possessions (material or immaterial), such as
 NTTs are non-tradable and non-fungible tokens, they are unique and they belong to you.
 
 <u>**NTTs are proofs of possession**</u>.
+
+## Motivation
+
+We witness universities around the world publishing their diplomas on the blockchain (e.g. MIT), each making their own smart contracts. We think diplomas are just a subset of a more general type of token: non-tradable token, aka NTT. By providing a common interface for this type of tokens, we allow more applications to be developed and we position the ethereum network as a standard gateway for verification of personal possessions.
 
 ## Specification
 
