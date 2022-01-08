@@ -10,7 +10,7 @@ abstract contract NTTDelegate is NTT, INTTDelegate {
     mapping (address => mapping(address => bool)) _allowed;
 
     /// @notice Grant one-time minting right to `operator` for `owner`
-    /// An allowed delegate can call the function to transfer rights.
+    /// An allowed operator can call the function to transfer rights.
     /// @param operator Address allowed to mint
     /// @param owner Address for whom `operator` is allowed to mint
     function delegate(address operator, address owner) public virtual override {
