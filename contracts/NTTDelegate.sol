@@ -13,18 +13,22 @@ abstract contract NTTDelegate is NTT, INTTDelegate {
     /// @param operator Address allowed to mint
     /// @param owner Address for whom `operator` is allowed to mint
     function delegate(address operator, address owner) public virtual override {
-        require(msg.sender == _creator, "Only contract creator can call this function");
+        require(_isCreator(), "Only contract creator can call this function");
         _allowed[operator][owner] = true;
     }
 
     /// @notice Mint a NTT
     /// @param owner Address for whom the NTT is minted
     function mint(address owner) public virtual override {
+        bool isCreator = _isCreator();
         require(
-            msg.sender == _creator || _allowed[msg.sender][owner],
+            isCreator || _allowed[msg.sender][owner],
             "Only contract creator or delegate are allowed to mint"
         );
         _mint(owner);
+        if (!isCreator) {
+            _allowed[msg.sender][owner] = false;
+        }
     }
 
     function supportsInterface(bytes4 interfaceId) public view virtual override(NTT) returns (bool) {

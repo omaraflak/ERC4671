@@ -87,4 +87,8 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
     function _baseURI() internal view virtual returns (string memory) {
         return "";
     }
+
+    function _isCreator() internal view virtual returns (bool) {
+        return msg.sender == _creator;
+    }
 }
