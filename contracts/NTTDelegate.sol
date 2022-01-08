@@ -17,7 +17,7 @@ abstract contract NTTDelegate is NTT, INTTDelegate {
         bool isCreator = _isCreator();
         require(
             isCreator || _allowed[msg.sender][owner],
-            "Only contract creator or delegate can call this function"
+            "Only contract creator or allowed operator can delegate"
         );
         if (!isCreator) {
             _allowed[msg.sender][owner] = false;
@@ -31,7 +31,7 @@ abstract contract NTTDelegate is NTT, INTTDelegate {
         bool isCreator = _isCreator();
         require(
             isCreator || _allowed[msg.sender][owner],
-            "Only contract creator or delegate are allowed to mint"
+            "Only contract creator or allowed operator can mint"
         );
         _mint(owner);
         if (!isCreator) {
