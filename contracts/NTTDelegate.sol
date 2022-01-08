@@ -17,14 +17,6 @@ abstract contract NTTDelegate is NTT, INTTDelegate {
         _allowed[operator][owner] = true;
     }
 
-    /// @notice Remove minting rights of `operator` for `owner`
-    /// @param operator Address for whom to remove the right to mint
-    /// @param owner Address for whom `operator` is not allowed to mint
-    function undelegate(address operator, address owner) public virtual override {
-        require(msg.sender == _creator, "Only contract creator can call this function");
-        _allowed[operator][owner] = false;
-    }
-
     /// @notice Mint a NTT
     /// @param owner Address for whom the NTT is minted
     function mint(address owner) public virtual override {
