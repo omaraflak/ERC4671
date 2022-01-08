@@ -4,11 +4,13 @@
   "description": "Non-Tradable Token Standard",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docs": "md-magic --path '*.md' --ignore 'node_modules'"
   },
   "author": "Omar Aflak",
   "license": "MIT",
   "dependencies": {
-    "@openzeppelin/contracts": "^4.4.1"
+    "@openzeppelin/contracts": "^4.4.1",
+    "markdown-magic": "^2.5.2"
   }
 }
