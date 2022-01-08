@@ -66,7 +66,7 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
         return _symbol;
     }
 
-    /// @notice Fetch API link containing information for a token
+    /// @notice Fetch link containing information for a token
     /// @param owner Address of the token's owner
     /// @param index Index of the token
     /// @return API link to query for the token's data

@@ -9,7 +9,7 @@ interface INTTMetadata {
     /// @return An abbreviated name of the tokens in this contract
     function symbol() external view returns (string memory);
 
-    /// @notice Fetch API link containing information for a token
+    /// @notice Fetch link containing information for a token
     /// @param owner Address of the token's owner
     /// @param index Index of the token
     /// @return Link to query for the token's data
