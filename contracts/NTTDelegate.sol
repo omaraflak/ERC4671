@@ -10,10 +10,18 @@ abstract contract NTTDelegate is NTT, INTTDelegate {
     mapping (address => mapping(address => bool)) _allowed;
 
     /// @notice Grant one-time minting right to `operator` for `owner`
+    /// An allowed delegate can call the function to transfer rights.
     /// @param operator Address allowed to mint
     /// @param owner Address for whom `operator` is allowed to mint
     function delegate(address operator, address owner) public virtual override {
-        require(_isCreator(), "Only contract creator can call this function");
+        bool isCreator = _isCreator();
+        require(
+            isCreator || _allowed[msg.sender][owner],
+            "Only contract creator can call this function"
+        );
+        if (!isCreator) {
+            _allowed[msg.sender][owner] = false;
+        }
         _allowed[operator][owner] = true;
     }
 
