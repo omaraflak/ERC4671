@@ -17,7 +17,7 @@ abstract contract NTTDelegate is NTT, INTTDelegate {
         bool isCreator = _isCreator();
         require(
             isCreator || _allowed[msg.sender][owner],
-            "Only contract creator can call this function"
+            "Only contract creator or delegate can call this function"
         );
         if (!isCreator) {
             _allowed[msg.sender][owner] = false;
