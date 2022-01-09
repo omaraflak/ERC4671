@@ -56,6 +56,13 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
         return _getTokenOrRevert(owner, index).issuer;
     }
 
+    /// @notice Get all the tokens of an account
+    /// @param owner Address for whom to get the tokens
+    /// @return Array of tokens
+    function tokensOf(address owner) public view virtual returns (Token[] memory) {
+        return _balances[owner];
+    }
+
     /// @return Descriptive name of the tokens in this contract
     function name() public view virtual override returns (string memory) {
         return _name;
