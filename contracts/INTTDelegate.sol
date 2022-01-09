@@ -10,7 +10,7 @@ interface INTTDelegate {
     function delegate(address operator, address owner) external;
 
     /// @notice Grant one-time minting right to a list of `operators` for a corresponding list of `owners`
-    /// An allowed operator can call the `delegate` function to transfer rights.
+    /// An allowed operator can call the function to transfer rights.
     /// @param operators Addresses allowed to mint
     /// @param owners Addresses for whom `operators` are allowed to mint
     function delegateBatch(address[] memory operators, address[] memory owners) external;
