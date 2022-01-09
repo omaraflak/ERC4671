@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.11;
+pragma solidity ^0.8.0;
 
 interface INTTDelegate {
     /// @notice Grant one-time minting right to `operator` for `owner`
