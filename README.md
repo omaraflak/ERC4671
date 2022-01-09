@@ -94,6 +94,9 @@ interface INTTMetadata {
     /// @return Address of the metadata store
     function store() external view returns (address);
 
+    /// @notice Chek if a token has metadata
+    /// @param owner Address of the token's owner
+    /// @param index Index of the token
     /// @return True if the token has an entry in the metadata store, false otherwise
     function hasMetadata(address owner, uint256 index) external view returns (bool);
 
@@ -219,6 +222,9 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
         return _store;
     }
 
+    /// @notice Chek if a token has metadata
+    /// @param owner Address of the token's owner
+    /// @param index Index of the token
     /// @return True if the token has an entry in the metadata store, false otherwise
     function hasMetadata(address owner, uint256 index) external view virtual override returns (bool) {
         INTTMetadataStore metadataStore = _getStoreOrRevert();

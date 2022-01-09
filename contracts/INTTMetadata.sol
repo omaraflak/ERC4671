@@ -14,6 +14,9 @@ interface INTTMetadata {
     /// @return Address of the metadata store
     function store() external view returns (address);
 
+    /// @notice Chek if a token has metadata
+    /// @param owner Address of the token's owner
+    /// @param index Index of the token
     /// @return True if the token has an entry in the metadata store, false otherwise
     function hasMetadata(address owner, uint256 index) external view returns (bool);
 

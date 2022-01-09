@@ -75,6 +75,9 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
         return _store;
     }
 
+    /// @notice Chek if a token has metadata
+    /// @param owner Address of the token's owner
+    /// @param index Index of the token
     /// @return True if the token has an entry in the metadata store, false otherwise
     function hasMetadata(address owner, uint256 index) external view virtual override returns (bool) {
         INTTMetadataStore metadataStore = _getStoreOrRevert();
