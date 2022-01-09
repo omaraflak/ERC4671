@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 
 interface INTTMetadataStore is IERC165 {
     struct Metadata {
+        bool _flag;
         string uri;
     }
 
