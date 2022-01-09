@@ -1,14 +1,15 @@
 # Non-Tradable Token Standard
 
-| <!-- -->       | <!-- -->                                        |
-|----------------|-------------------------------------------------|
-| Author         | Omar Aflak                                      |
-| Discussions-To | https://github.com/ethereum/eips/issues/#number |
-| Status         | Draft                                           |
-| Type           | Standards Track                                 |
-| Category       | ERC                                             |
-| Created        | 2022-01-05                                      |
-| Requires       | [165](https://eips.ethereum.org/EIPS/eip-165)   |
+| <!-- -->       | <!-- -->                                                                                                                        |
+|----------------|---------------------------------------------------------------------------------------------------------------------------------|
+| Author         | [Omar Aflak](https://github.com/omaraflak)                                                                                      |
+| Contributors   | [Marvin Martin](https://github.com/MarvinMartin24), [Pol-Malo Le Bris](https://www.linkedin.com/in/pol-malo-le-bris-a251801a2/) |
+| Discussions-To | https://github.com/ethereum/eips/issues/#number                                                                                 |
+| Status         | Draft                                                                                                                           |
+| Type           | Standards Track                                                                                                                 |
+| Category       | ERC                                                                                                                             |
+| Created        | 2022-01-05                                                                                                                      |
+| Requires       | [165](https://eips.ethereum.org/EIPS/eip-165)                                                                                   |
 
 <!-- AUTO-GENERATED-CONTENT:START (TOC) -->
 - [Simple Summary](#simple-summary)
