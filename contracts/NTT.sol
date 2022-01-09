@@ -7,7 +7,6 @@ import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 
 import "./INTT.sol";
 import "./INTTMetadata.sol";
-import "./INTTMetadataStore.sol";
 
 abstract contract NTT is INTT, INTTMetadata, ERC165 {
     // Token data
@@ -27,9 +26,6 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
 
     // Contract creator
     address private _creator;
-
-    // Metadata store
-    address private _store;
 
     constructor (string memory name_, string memory symbol_) {
         _name = name_;
@@ -70,37 +66,28 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
         return _symbol;
     }
 
-    /// @return Address of the metadata store
-    function store() external view virtual override returns (address) {
-        return _store;
-    }
-
-    /// @notice Chek if a token has metadata
+    /// @notice Get the URI of a token
     /// @param owner Address of the token's owner
     /// @param index Index of the token
-    /// @return True if the token has an entry in the metadata store, false otherwise
-    function hasMetadata(address owner, uint256 index) external view virtual override returns (bool) {
-        INTTMetadataStore metadataStore = _getStoreOrRevert();
-        return metadataStore.hasMetadata(_self(), owner, index);
-    }
-
-    /// @notice Get the metadata of a token from the metadata store
-    /// @param owner Address of the token's owner
-    /// @param index Index of the token
-    /// @return Metadata of the token
-    function getMetadata(address owner, uint256 index) external view virtual override returns (INTTMetadataStore.Metadata memory) {
+    /// @return URI of the token
+    function tokenURI(address owner, uint256 index) public view virtual override returns (string memory) {
         _getTokenOrRevert(owner, index);
-        INTTMetadataStore metadataStore = _getStoreOrRevert();
-        return metadataStore.getMetadata(_self(), owner, index);
+        return string(abi.encodePacked(_baseURI(), _tokenId(owner, index)));
     }
 
-    /// @notice Set the metadata of a token
+    /// @return Common base URI for all token
+    function _baseURI() internal pure virtual returns (string memory) {
+        return "";
+    }
+
     /// @param owner Address of the token's owner
     /// @param index Index of the token
-    /// @param metadata Metadata to set
-    function setMetadata(address owner, uint256 index, INTTMetadataStore.Metadata memory metadata) external virtual override {
-        INTTMetadataStore metadataStore = _getStoreOrRevert();
-        metadataStore.setMetadata(_self(), owner, index, metadata);
+    /// @return A unique identifier for that token
+    function _tokenId(address owner, uint256 index) internal pure virtual returns (bytes memory) {
+        return abi.encodePacked(
+            Strings.toHexString(uint256(uint160(owner)), 20),
+            Strings.toHexString(index, 32)
+        );
     }
 
     function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {
@@ -108,15 +95,6 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
             interfaceId == type(INTT).interfaceId ||
             interfaceId == type(INTTMetadata).interfaceId ||
             super.supportsInterface(interfaceId);
-    }
-
-    function _setMetadataStore(address store_) internal virtual {
-        IERC165 erc165 = IERC165(store_);
-        require(
-            erc165.supportsInterface(type(INTTMetadataStore).interfaceId),
-            "Address provided does not comply with INTTMetadataStore"
-        );
-        _store = store_;
     }
 
     /// @notice Mark the token as invalidated
@@ -146,14 +124,5 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
         Token[] storage tokens = _balances[owner];
         require(index < tokens.length, "NTT does not exist");
         return tokens[index];
-    }
-
-    function _getStoreOrRevert() internal view virtual returns (INTTMetadataStore) {
-        require(_store != address(0), "No metadata store provided");
-        return INTTMetadataStore(_store);
-    }
-
-    function _self() internal view virtual returns (address) {
-        return address(this);
     }
 }
