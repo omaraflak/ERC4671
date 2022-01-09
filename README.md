@@ -37,7 +37,7 @@ NTTs are non-tradable and non-fungible tokens, they are unique and they belong t
 
 ## Motivation
 
-We witness universities around the world publishing their diplomas on the blockchain (e.g. MIT), each making their own smart contracts. We think diplomas are just a subset of a more general type of token: non-tradable token, aka NTT. By providing a common interface for this type of tokens, we allow more applications to be developed and we position the ethereum network as a standard gateway for verification of personal possessions.
+We witness universities around the world publishing their diplomas on the blockchain (e.g. MIT), each making their own smart contracts. We think diplomas are just a subset of a more general type of tokens: non-tradable tokens, aka NTT. By providing a common interface for this type of tokens, we allow more applications to be developed and we position the ethereum network as a standard gateway for verification of personal possessions.
 
 ## Specification
 
