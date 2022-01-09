@@ -196,10 +196,10 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
         return _symbol;
     }
 
-    /// @notice Get the URI of a token
+    /// @notice URI to query to get the token's metadata
     /// @param owner Address of the token's owner
     /// @param index Index of the token
-    /// @return URI of the token
+    /// @return URI for the token
     function tokenURI(address owner, uint256 index) public view virtual override returns (string memory) {
         _getTokenOrRevert(owner, index);
         return string(abi.encodePacked(_baseURI(), _tokenId(owner, index)));
