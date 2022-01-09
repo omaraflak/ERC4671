@@ -115,9 +115,19 @@ interface INTTDelegate {
     /// @param owner Address for whom `operator` is allowed to mint
     function delegate(address operator, address owner) external;
 
-    /// @notice Mint a token
+    /// @notice Grant one-time minting right to a list of `operators` for a corresponding list of `owners`
+    /// An allowed operator can call the `delegate` function to transfer rights.
+    /// @param operators Addresses allowed to mint
+    /// @param owners Addresses for whom `operators` are allowed to mint
+    function delegateBatch(address[] memory operators, address[] memory owners) external;
+
+    /// @notice Mint a token. Caller must have the right to mint for the owner.
     /// @param owner Address for whom the token is minted
     function mint(address owner) external;
+
+    /// @notice Mint tokens to multiple addresses. Caller must have the right to mint for all owners.
+    /// @param owners Addresses for whom the tokens are minted
+    function mintBatch(address[] memory owners) external;
 }
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
@@ -299,7 +309,19 @@ abstract contract NTTDelegate is NTT, INTTDelegate {
         _allowed[operator][owner] = true;
     }
 
-    /// @notice Mint a token
+    /// @notice Grant one-time minting right to a list of `operators` for a corresponding list of `owners`
+    /// An allowed operator can call the `delegate` function to transfer rights.
+    /// @param operators Addresses allowed to mint
+    /// @param owners Addresses for whom `operators` are allowed to mint
+    function delegateBatch(address[] memory operators, address[] memory owners) public virtual override {
+        require(_isCreator(), "delegateBatch is reserved for the contract creator");
+        require(operators.length == owners.length, "operators and owners must have the same length");
+        for (uint i=0; i<operators.length; i++) {
+            _allowed[operators[i]][owners[i]] = true;
+        }
+    }
+
+    /// @notice Mint a token. Caller must have the right to mint for the owner.
     /// @param owner Address for whom the token is minted
     function mint(address owner) public virtual override {
         bool isCreator = _isCreator();
@@ -310,6 +332,16 @@ abstract contract NTTDelegate is NTT, INTTDelegate {
         _mint(owner);
         if (!isCreator) {
             _allowed[msg.sender][owner] = false;
+        }
+    }
+
+    /// @notice Mint tokens to multiple addresses. Caller must have the right to mint for all owners.
+    /// @param owners Addresses for whom the tokens are minted
+    function mintBatch(address[] memory owners) public virtual override {
+        for (uint i=0 ; i<owners.length; i++) {
+            require(_allowed[msg.sender][owners[i]], "Trying to mint for an unallowed owner");
+            _allowed[msg.sender][owners[i]] = false;
+            _mint(owners[i]);
         }
     }
 
