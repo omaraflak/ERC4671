@@ -391,7 +391,7 @@ pragma solidity ^0.8.0;
 
 import "./NTT.sol";
 
-contract EIPBadge is NTT {
+contract EIPCreatorBadge is NTT {
     address private creator;
 
     constructor() NTT("EIP Creator Badge", "EIP") {
