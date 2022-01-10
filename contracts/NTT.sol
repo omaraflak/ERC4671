@@ -86,6 +86,19 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
         return "";
     }
 
+    /// @notice Check if a given address owns a valid token
+    /// @param owner Address for whom to check
+    /// @return True if `owner` has a valid token, false otherwise
+    function hasValidToken(address owner) external view virtual returns (bool) {
+        Token[] storage tokens = _balances[owner];
+        for (uint i=0; i<tokens.length; i++) {
+            if (tokens[i].valid) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /// @notice Prefix for all calls to tokenURI
     /// @return Common base URI for all token
     function _baseURI() internal pure virtual returns (string memory) {
