@@ -79,8 +79,8 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
     /// @return URI for the token
     function tokenURI(address owner, uint256 index) public view virtual override returns (string memory) {
         _getTokenOrRevert(owner, index);
-        string memory baseURI = _baseURI();
-        if (bytes(baseURI).length > 0) {
+        bytes memory baseURI = bytes(_baseURI());
+        if (baseURI.length > 0) {
             return string(abi.encodePacked(baseURI, _tokenId(owner, index)));
         }
         return "";
