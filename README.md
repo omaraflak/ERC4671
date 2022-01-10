@@ -3,7 +3,7 @@
 | <!-- -->       | <!-- -->                                                                                                                        |
 |----------------|---------------------------------------------------------------------------------------------------------------------------------|
 | Author         | [Omar Aflak](https://github.com/omaraflak)                                                                                      |
-| Contributors   | [Marvin Martin](https://github.com/MarvinMartin24), [Pol-Malo Le Bris](https://www.linkedin.com/in/pol-malo-le-bris-a251801a2/) |
+| Contributors   | [Pol-Malo Le Bris](https://www.linkedin.com/in/pol-malo-le-bris-a251801a2/), [Marvin Martin](https://github.com/MarvinMartin24) |
 | Discussions-To | https://github.com/ethereum/eips/issues/#number                                                                                 |
 | Status         | Draft                                                                                                                           |
 | Type           | Standards Track                                                                                                                 |
