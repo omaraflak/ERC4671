@@ -22,6 +22,7 @@
 - [Implementation](#implementation)
   - [NTT](#ntt)
   - [NTTDelegate](#nttdelegate)
+- [NTT for EIP ?](#ntt-for-eip-)
 <!-- AUTO-GENERATED-CONTENT:END -->
 
 ## Simple Summary
@@ -378,3 +379,32 @@ abstract contract NTTDelegate is NTT, INTTDelegate {
 }
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
+
+# NTT for EIP ?
+
+As a first NTT, why not create the **EIP Creator Badge** ? An NTT created by the Ethereum foundation, and attributed to EIP-standard creators ? 🙂
+
+```solidity
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.0;
+
+import "./NTT.sol";
+
+contract EIPBadge is NTT {
+    address private creator;
+
+    constructor() NTT("EIP Creator Badge", "EIP") {
+        creator = msg.sender;
+    }
+
+    function giveThatManABadge(address owner) external {
+        require(msg.sender == creator, "You must be the contract creator");
+        _mint(owner);
+    }
+
+    function _baseURI() internal pure override returns (string memory) {
+        return "https://eips.ethereum.org/ntt/";
+    }
+}
+```
