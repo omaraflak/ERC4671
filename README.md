@@ -26,19 +26,21 @@
 
 ## Simple Summary
 
-A standard interface for non-tradable tokens.
+A standard interface for <u>**non-tradable tokens**</u>, aka <u>**NTT**</u>s.
 
 ## Abstract
 
-NTTs represent inherently personal possessions (material or immaterial), such as school diplomas, online training certificates, government issued documents (national id, driving licence, visa, etc.), home address, badges, and so on.
+NTTs represent inherently personal possessions (material or immaterial), such as university diplomas, online training certificates, government issued documents (national id, driving licence, visa, wedding, etc.), badges, labels, and so on.
 
-NTTs are non-tradable and non-fungible tokens, they are unique and they belong to you.
+Non-tradable tokens are unique and they belong to you.
 
-<u>**NTTs are proofs of possession**</u>.
+<u>**NTTs are proofs of possession.**</u>
 
 ## Motivation
 
-We witness universities around the world publishing their diplomas on the blockchain (e.g. MIT), each making their own smart contracts. We think diplomas are just a subset of a more general type of tokens: non-tradable tokens, aka NTT. By providing a common interface for this type of tokens, we allow more applications to be developed and we position the ethereum network as a standard gateway for verification of personal possessions.
+US, 2017, MIT published 111 diplomas on a blockchain. France, 2018, Carrefour multinational retail corporation used blockchain technology to certify the provenance of its chickens. South Korea, 2019, the state published 1 million driving licences on a blockchain-powered platform.
+
+Each of them made their own smart contracts, with different implementations. We think diplomas, food labels, or driving licences are just a subset of a more general type of tokens: **non-tradable tokens**, aka **NTT**. By providing a common interface for this type of tokens, we allow more applications to be developed and we position the Ethereum network as a standard gateway for verification of personal possessions.
 
 ## Specification
 
