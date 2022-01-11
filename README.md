@@ -225,9 +225,19 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
         _getTokenOrRevert(owner, index);
         bytes memory baseURI = bytes(_baseURI());
         if (baseURI.length > 0) {
-            return string(abi.encodePacked(baseURI, _tokenId(owner, index)));
+            return string(abi.encodePacked(baseURI, tokenId(owner, index)));
         }
         return "";
+    }
+
+    /// @param owner Address of the token's owner
+    /// @param index Index of the token
+    /// @return A unique identifier for that token
+    function tokenId(address owner, uint256 index) public pure virtual returns (bytes memory) {
+        return abi.encodePacked(
+            Strings.toHexString(uint256(uint160(owner)), 20),
+            Strings.toHexString(index, 32)
+        );
     }
 
     /// @notice Check if a given address owns a valid token
@@ -247,16 +257,6 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
     /// @return Common base URI for all token
     function _baseURI() internal pure virtual returns (string memory) {
         return "";
-    }
-
-    /// @param owner Address of the token's owner
-    /// @param index Index of the token
-    /// @return A unique identifier for that token
-    function _tokenId(address owner, uint256 index) internal pure virtual returns (bytes memory) {
-        return abi.encodePacked(
-            Strings.toHexString(uint256(uint160(owner)), 20),
-            Strings.toHexString(index, 32)
-        );
     }
 
     function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {
