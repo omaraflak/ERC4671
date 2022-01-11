@@ -152,7 +152,7 @@ interface INTTDelegate {
 
 ## On-chain vs Off-chain
 
-A decision was might to keep the data off-chain (via `tokenURI()`) for two main reasons: 
+A decision was made to keep the data off-chain (via `tokenURI()`) for two main reasons: 
 * Non-Tradable Tokens represent personal possessions. Therefore, there might be cases where the data should be encrypted. The standard should not outline decisions about encryption because there are just so many ways this could be done, and every possibility is specific to the use-case.
 * Non-Tradable Tokens must stay generic. There could have been a possibility to make a `MetadataStore` holding the data of NTTs in an elegant way, unfortunately we would have needed a support for generics in solidity (or struct inheritance), which is not available today.
 
