@@ -351,11 +351,19 @@ abstract contract NTTDelegate is NTT, INTTDelegate {
         }
     }
 
+    /// @notice Check if an operator is a delegate for a given address
+    /// @param operator Address of the operator
+    /// @param owner Address of the token's owner
+    /// @return True if the `operator` is a delegate for `owner`, false otherwise
+    function isDelegate(address operator, address owner) public view returns (bool) {
+        return _allowed[operator][owner];
+    }
+
     /// @notice Check if you are a delegate for a given address
-    /// @param owner Address for whom to check the delegate rights
-    /// @return True if the caller is a delegate of `owner`, false otherwise
-    function isDelegate(address owner) public view returns (bool) {
-        return _allowed[msg.sender][owner];
+    /// @param owner Address of the token's owner
+    /// @return True if the caller is a delegate for `owner`, false otherwise
+    function isDelegateOf(address owner) public view returns (bool) {
+        return isDelegate(msg.sender, owner);
     }
 
     function supportsInterface(bytes4 interfaceId) public view virtual override(NTT) returns (bool) {
