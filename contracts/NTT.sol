@@ -109,17 +109,17 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
         return false;
     }
 
-    /// @notice Prefix for all calls to tokenURI
-    /// @return Common base URI for all token
-    function _baseURI() internal pure virtual returns (string memory) {
-        return "";
-    }
-
     function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {
         return 
             interfaceId == type(INTT).interfaceId ||
             interfaceId == type(INTTMetadata).interfaceId ||
             super.supportsInterface(interfaceId);
+    }
+
+    /// @notice Prefix for all calls to tokenURI
+    /// @return Common base URI for all token
+    function _baseURI() internal pure virtual returns (string memory) {
+        return "";
     }
 
     /// @notice Mark the token as invalidated
