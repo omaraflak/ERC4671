@@ -16,20 +16,23 @@
 - [Abstract](#abstract)
 - [Motivation](#motivation)
 - [Specification](#specification)
-  - [Extensions](#extensions)
-    - [Metadata](#metadata)
-    - [Delegation](#delegation)
+- [Extensions](#extensions)
+  - [Metadata](#metadata)
+  - [Delegation](#delegation)
+- [Rationale](#rationale)
+- [On-chain vs Off-chain](#on-chain-vs-off-chain)
 - [Implementation](#implementation)
-  - [NTT](#ntt)
-  - [NTTDelegate](#nttdelegate)
+- [NTT](#ntt)
+- [NTTDelegate](#nttdelegate)
 - [NTT for EIP ?](#ntt-for-eip-)
+- [Copyright](#copyright)
 <!-- AUTO-GENERATED-CONTENT:END -->
 
-## Simple Summary
+# Simple Summary
 
 A standard interface for <u>**non-tradable tokens**</u>, aka <u>**NTT**</u>s.
 
-## Abstract
+# Abstract
 
 NTTs represent inherently personal possessions (material or immaterial), such as university diplomas, online training certificates, government issued documents (national id, driving licence, visa, wedding, etc.), badges, labels, and so on.
 
@@ -37,7 +40,7 @@ NTTs are unique and they belong to you.
 
 <u>**NTTs are proofs of possession.**</u>
 
-## Motivation
+# Motivation
 
 US, 2017, MIT published 111 diplomas on a blockchain. France, 2018, Carrefour multinational retail corporation used blockchain technology to certify the provenance of its chickens. South Korea, 2019, the state published 1 million driving licences on a blockchain-powered platform.
 
@@ -45,7 +48,7 @@ Each of them made their own smart contracts, with different implementations. We 
 
 By providing a common interface for this type of tokens, we allow more applications to be developed and we position blockchain technology as a standard gateway for verification of personal possessions.
 
-## Specification
+# Specification
 
 * An address might possess multiple tokens, which are indexed.
 * An authority who gives you a certificate, should be in position to invalidate it. Think of driving licences for instance. However, it can never delete your token.
@@ -81,9 +84,9 @@ interface INTT is IERC165 {
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
 
-### Extensions
+## Extensions
 
-#### Metadata
+### Metadata
 
 An interface allowing to add metadata linked to each token, as in ERC721.
 
@@ -110,7 +113,7 @@ interface INTTMetadata {
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
 
-#### Delegation
+### Delegation
 
 An interface to standardize delegation rights of token minting.
 
@@ -145,9 +148,17 @@ interface INTTDelegate {
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
 
-## Implementation
+# Rationale
 
-### NTT
+## On-chain vs Off-chain
+
+A decision was might to keep the data off-chain (via `tokenURI()`) for two main reasons: 
+* Non-Tradable Tokens represent personal possessions. Therefore, there might be cases where the data should be encrypted. The standard should not outline decisions about encryption because there are just so many ways this could be done, and every possibility is specific to the use-case.
+* Non-Tradable Tokens must stay generic. There could have been a possibility to make a `MetadataStore` holding the data of NTTs in an elegant way, unfortunately we would have needed a support for generics in solidity (or struct inheritance), which is not available today.
+
+# Implementation
+
+## NTT
 
 <!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/NTT.sol) -->
 <!-- The below code snippet is automatically added from ./contracts/NTT.sol -->
@@ -308,7 +319,7 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
 
-### NTTDelegate
+## NTTDelegate
 
 <!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/NTTDelegate.sol) -->
 <!-- The below code snippet is automatically added from ./contracts/NTTDelegate.sol -->
