@@ -47,6 +47,10 @@ By providing a common interface for this type of tokens, we allow more applicati
 
 ## Specification
 
+* An address might possess multiple tokens, which are indexed.
+* An authority who gives you a certificate, should be in position to invalidate it. Think of driving licences for instance. However, it can never delete your token.
+* The issuer of a token might be someone else than the contract creator.
+
 <!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/INTT.sol) -->
 <!-- The below code snippet is automatically added from ./contracts/INTT.sol -->
 ```solidity
@@ -81,6 +85,8 @@ interface INTT is IERC165 {
 
 #### Metadata
 
+An interface allowing to add metadata linked to each token, as in ERC721.
+
 <!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/INTTMetadata.sol) -->
 <!-- The below code snippet is automatically added from ./contracts/INTTMetadata.sol -->
 ```solidity
@@ -106,6 +112,8 @@ interface INTTMetadata {
 
 #### Delegation
 
+An interface to standardize delegation rights of token minting.
+
 <!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/INTTDelegate.sol) -->
 <!-- The below code snippet is automatically added from ./contracts/INTTDelegate.sol -->
 ```solidity
@@ -116,14 +124,14 @@ pragma solidity ^0.8.0;
 interface INTTDelegate {
     /// @notice Grant one-time minting right to `operator` for `owner`
     /// An allowed operator can call the function to transfer rights.
-    /// @param operator Address allowed to mint
-    /// @param owner Address for whom `operator` is allowed to mint
+    /// @param operator Address allowed to mint a token
+    /// @param owner Address for whom `operator` is allowed to mint a token
     function delegate(address operator, address owner) external;
 
     /// @notice Grant one-time minting right to a list of `operators` for a corresponding list of `owners`
     /// An allowed operator can call the function to transfer rights.
     /// @param operators Addresses allowed to mint
-    /// @param owners Addresses for whom `operators` are allowed to mint
+    /// @param owners Addresses for whom `operators` are allowed to mint a token
     function delegateBatch(address[] memory operators, address[] memory owners) external;
 
     /// @notice Mint a token. Caller must have the right to mint for the owner.
@@ -318,16 +326,16 @@ abstract contract NTTDelegate is NTT, INTTDelegate {
 
     /// @notice Grant one-time minting right to `operator` for `owner`
     /// An allowed operator can call the function to transfer rights.
-    /// @param operator Address allowed to mint
-    /// @param owner Address for whom `operator` is allowed to mint
+    /// @param operator Address allowed to mint a token
+    /// @param owner Address for whom `operator` is allowed to mint a token
     function delegate(address operator, address owner) public virtual override {
         _delegateAsDelegateOrCreator(operator, owner, _isCreator());
     }
 
     /// @notice Grant one-time minting right to a list of `operators` for a corresponding list of `owners`
     /// An allowed operator can call the function to transfer rights.
-    /// @param operators Addresses allowed to mint
-    /// @param owners Addresses for whom `operators` are allowed to mint
+    /// @param operators Addresses allowed to mint a token
+    /// @param owners Addresses for whom `operators` are allowed to mint a token
     function delegateBatch(address[] memory operators, address[] memory owners) public virtual override {
         require(operators.length == owners.length, "operators and owners must have the same length");
         bool isCreator = _isCreator();

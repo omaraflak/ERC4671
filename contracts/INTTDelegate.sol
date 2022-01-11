@@ -5,14 +5,14 @@ pragma solidity ^0.8.0;
 interface INTTDelegate {
     /// @notice Grant one-time minting right to `operator` for `owner`
     /// An allowed operator can call the function to transfer rights.
-    /// @param operator Address allowed to mint
-    /// @param owner Address for whom `operator` is allowed to mint
+    /// @param operator Address allowed to mint a token
+    /// @param owner Address for whom `operator` is allowed to mint a token
     function delegate(address operator, address owner) external;
 
     /// @notice Grant one-time minting right to a list of `operators` for a corresponding list of `owners`
     /// An allowed operator can call the function to transfer rights.
     /// @param operators Addresses allowed to mint
-    /// @param owners Addresses for whom `operators` are allowed to mint
+    /// @param owners Addresses for whom `operators` are allowed to mint a token
     function delegateBatch(address[] memory operators, address[] memory owners) external;
 
     /// @notice Mint a token. Caller must have the right to mint for the owner.

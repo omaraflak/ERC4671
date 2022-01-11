@@ -11,16 +11,16 @@ abstract contract NTTDelegate is NTT, INTTDelegate {
 
     /// @notice Grant one-time minting right to `operator` for `owner`
     /// An allowed operator can call the function to transfer rights.
-    /// @param operator Address allowed to mint
-    /// @param owner Address for whom `operator` is allowed to mint
+    /// @param operator Address allowed to mint a token
+    /// @param owner Address for whom `operator` is allowed to mint a token
     function delegate(address operator, address owner) public virtual override {
         _delegateAsDelegateOrCreator(operator, owner, _isCreator());
     }
 
     /// @notice Grant one-time minting right to a list of `operators` for a corresponding list of `owners`
     /// An allowed operator can call the function to transfer rights.
-    /// @param operators Addresses allowed to mint
-    /// @param owners Addresses for whom `operators` are allowed to mint
+    /// @param operators Addresses allowed to mint a token
+    /// @param owners Addresses for whom `operators` are allowed to mint a token
     function delegateBatch(address[] memory operators, address[] memory owners) public virtual override {
         require(operators.length == owners.length, "operators and owners must have the same length");
         bool isCreator = _isCreator();
