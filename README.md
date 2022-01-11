@@ -51,7 +51,7 @@ By providing a common interface for this type of tokens, we allow more applicati
 A single NTT contract, is seen as representing one type of badge by one authority. For instance, one NTT contract for MIT diplomas, one NTT contract for the state driving licences, and so on...
 
 * An address might possess multiple tokens, which are indexed.
-* An authority who gives you a certificate, should be in position to invalidate it. Think of driving licences for instance. However, it can never delete your token.
+* An authority who delivers a certificate, should be in position to invalidate it. Think of driving licences for instance. However, it can never delete your token.
 * The issuer of a token might be someone else than the contract creator.
 
 <!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/INTT.sol) -->
