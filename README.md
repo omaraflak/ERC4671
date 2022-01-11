@@ -235,11 +235,11 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
     /// @param owner Address of the token's owner
     /// @param index Index of the token
     /// @return A unique identifier for that token
-    function tokenId(address owner, uint256 index) public pure virtual returns (bytes memory) {
-        return abi.encodePacked(
+    function tokenId(address owner, uint256 index) public pure virtual returns (string memory) {
+        return string(abi.encodePacked(
             Strings.toHexString(uint256(uint160(owner)), 20),
             Strings.toHexString(index, 32)
-        );
+        ));
     }
 
     /// @notice Check if a given address owns a valid token
