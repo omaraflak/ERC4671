@@ -392,14 +392,10 @@ pragma solidity ^0.8.0;
 import "./NTT.sol";
 
 contract EIPCreatorBadge is NTT {
-    address private creator;
-
-    constructor() NTT("EIP Creator Badge", "EIP") {
-        creator = msg.sender;
-    }
+    constructor() NTT("EIP Creator Badge", "EIP") {}
 
     function giveThatManABadge(address owner) external {
-        require(msg.sender == creator, "You must be the contract creator");
+        require(_isCreator(), "You must be the contract creator");
         _mint(owner);
     }
 
