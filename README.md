@@ -36,9 +36,7 @@ A standard interface for <u>**non-tradable tokens**</u>, aka <u>**NTT**</u>s.
 
 NTTs represent inherently personal possessions (material or immaterial), such as university diplomas, online training certificates, government issued documents (national id, driving licence, visa, wedding, etc.), badges, labels, and so on.
 
-NTTs are unique and they belong to you.
-
-<u>**NTTs are proofs of possession.**</u>
+As the name implies, NTTs are not made to be traded or sold. They don't have monetary value. They only serve as a **proof of possession**.
 
 # Motivation
 
