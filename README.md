@@ -33,7 +33,7 @@ A standard interface for <u>**non-tradable tokens**</u>, aka <u>**NTT**</u>s.
 
 NTTs represent inherently personal possessions (material or immaterial), such as university diplomas, online training certificates, government issued documents (national id, driving licence, visa, wedding, etc.), badges, labels, and so on.
 
-Non-tradable tokens are unique and they belong to you.
+NTTs are unique and they belong to you.
 
 <u>**NTTs are proofs of possession.**</u>
 
@@ -41,7 +41,9 @@ Non-tradable tokens are unique and they belong to you.
 
 US, 2017, MIT published 111 diplomas on a blockchain. France, 2018, Carrefour multinational retail corporation used blockchain technology to certify the provenance of its chickens. South Korea, 2019, the state published 1 million driving licences on a blockchain-powered platform.
 
-Each of them made their own smart contracts, with different implementations. We think diplomas, food labels, or driving licences are just a subset of a more general type of tokens: **non-tradable tokens**, aka **NTT**. By providing a common interface for this type of tokens, we allow more applications to be developed and we position the Ethereum network as a standard gateway for verification of personal possessions.
+Each of them made their own smart contracts, with different implementations. We think diplomas, food labels, or driving licences are just a subset of a more general type of tokens: **non-tradable tokens**. Tokens that represent certificates or labels that were granted to you by some authority.
+
+By providing a common interface for this type of tokens, we allow more applications to be developed and we position blockchain technology as a standard gateway for verification of personal possessions.
 
 ## Specification
 
