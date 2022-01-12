@@ -4,6 +4,9 @@
 |----------------|---------------------------------------------------------------------------------------------------------------------------------|
 | Author         | [Omar Aflak](https://github.com/omaraflak)                                                                                      |
 | Contributors   | [Pol-Malo Le Bris](https://www.linkedin.com/in/pol-malo-le-bris-a251801a2/), [Marvin Martin](https://github.com/MarvinMartin24) |
+| Title          | Non-Tradable Tokens                                                                                                             |
+| Description    | A standard interface for <u>**non-tradable tokens**</u>.                                                                        |
+| EIP            | <to be assigned>                                                                                                                |
 | Discussions-To | https://github.com/ethereum/eips/issues/#number                                                                                 |
 | Status         | Draft                                                                                                                           |
 | Type           | Standards Track                                                                                                                 |
