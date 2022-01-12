@@ -11,7 +11,7 @@
 | Status         | Draft                                                                                                                           |
 | Type           | Standards Track                                                                                                                 |
 | Category       | ERC                                                                                                                             |
-| Created        | 2022-01-05                                                                                                                      |
+| Created        | 2022-01-12                                                                                                                      |
 | Requires       | [165](https://eips.ethereum.org/EIPS/eip-165)                                                                                   |
 
 <!-- AUTO-GENERATED-CONTENT:START (TOC) -->
