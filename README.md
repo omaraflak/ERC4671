@@ -16,29 +16,29 @@
 - [Abstract](#abstract)
 - [Motivation](#motivation)
 - [Specification](#specification)
-- [Extensions](#extensions)
-  - [Metadata](#metadata)
-  - [Delegation](#delegation)
+  - [Extensions](#extensions)
+    - [Metadata](#metadata)
+    - [Delegation](#delegation)
 - [Rationale](#rationale)
-- [On-chain vs Off-chain](#on-chain-vs-off-chain)
+  - [On-chain vs Off-chain](#on-chain-vs-off-chain)
 - [Implementation](#implementation)
-- [NTT](#ntt)
-- [NTTDelegate](#nttdelegate)
+  - [NTT](#ntt)
+  - [NTTDelegate](#nttdelegate)
 - [NTT for EIP ?](#ntt-for-eip-)
 - [Copyright](#copyright)
 <!-- AUTO-GENERATED-CONTENT:END -->
 
-# Simple Summary
+## Simple Summary
 
 A standard interface for <u>**non-tradable tokens**</u>, aka <u>**NTT**</u>s.
 
-# Abstract
+## Abstract
 
 NTTs represent inherently personal possessions (material or immaterial), such as university diplomas, online training certificates, government issued documents (national id, driving licence, visa, wedding, etc.), badges, labels, and so on.
 
 As the name implies, NTTs are not made to be traded or sold. They don't have monetary value. They only serve as a **proof of possession**.
 
-# Motivation
+## Motivation
 
 US, 2017, MIT published 111 diplomas on a blockchain. France, 2018, Carrefour multinational retail corporation used blockchain technology to certify the provenance of its chickens. South Korea, 2019, the state published 1 million driving licences on a blockchain-powered platform.
 
@@ -46,7 +46,7 @@ Each of them made their own smart contracts, with different implementations. We 
 
 By providing a common interface for this type of tokens, we allow more applications to be developed and we position blockchain technology as a standard gateway for verification of personal possessions.
 
-# Specification
+## Specification
 
 A single NTT contract, is seen as representing one type of badge by one authority. For instance, one NTT contract for MIT diplomas, one NTT contract for the state driving licences, and so on...
 
@@ -84,9 +84,9 @@ interface INTT is IERC165 {
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
 
-## Extensions
+### Extensions
 
-### Metadata
+#### Metadata
 
 An interface allowing to add metadata linked to each token, as in ERC721.
 
@@ -113,7 +113,7 @@ interface INTTMetadata {
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
 
-### Delegation
+#### Delegation
 
 An interface to standardize delegation rights of token minting.
 
@@ -148,17 +148,17 @@ interface INTTDelegate {
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
 
-# Rationale
+## Rationale
 
-## On-chain vs Off-chain
+### On-chain vs Off-chain
 
 A decision was made to keep the data off-chain (via `tokenURI()`) for two main reasons: 
 * Non-Tradable Tokens represent personal possessions. Therefore, there might be cases where the data should be encrypted. The standard should not outline decisions about encryption because there are just so many ways this could be done, and every possibility is specific to the use-case.
 * Non-Tradable Tokens must stay generic. There could have been a possibility to make a `MetadataStore` holding the data of NTTs in an elegant way, unfortunately we would have needed a support for generics in solidity (or struct inheritance), which is not available today.
 
-# Implementation
+## Implementation
 
-## NTT
+### NTT
 
 <!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/NTT.sol) -->
 <!-- The below code snippet is automatically added from ./contracts/NTT.sol -->
@@ -319,7 +319,7 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
 
-## NTTDelegate
+### NTTDelegate
 
 <!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/NTTDelegate.sol) -->
 <!-- The below code snippet is automatically added from ./contracts/NTTDelegate.sol -->
@@ -416,7 +416,7 @@ abstract contract NTTDelegate is NTT, INTTDelegate {
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
 
-# NTT for EIP ?
+## NTT for EIP ?
 
 As a first NTT, why not create the **EIP Creator Badge** ? An NTT created by the Ethereum foundation, and attributed to EIP-standard creators ? 🙂
 
@@ -441,6 +441,6 @@ contract EIPCreatorBadge is NTT {
 }
 ```
 
-# Copyright
+## Copyright
 
 Copyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
