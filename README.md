@@ -1,18 +1,17 @@
-# Non-Tradable Token Standard
+---
+eip: 4671
+title: Non-Tradable Tokens
+description: A standard interface for non-tradable tokens.
+author: Omar Aflak (@omaraflak), Pol-Malo Le Bris, Marvin Martin (@MarvinMartin24)
+discussions-to: https://ethereum-magicians.org/t/eip-4671-non-tradable-token/7976?u=omaraflak
+status: Draft
+type: Standards Track
+category: ERC
+created: 2022-01-13
+requires: 165
+---
 
-| <!-- -->       | <!-- -->                                                                                                                        |
-|----------------|---------------------------------------------------------------------------------------------------------------------------------|
-| Title          | Non-Tradable Tokens                                                                                                             |
-| Description    | A standard interface for non-tradable tokens.                                                                                   |
-| EIP            | To be assigned                                                                                                                  |
-| Author         | [Omar Aflak](https://github.com/omaraflak)                                                                                      |
-| Contributors   | [Pol-Malo Le Bris](https://www.linkedin.com/in/pol-malo-le-bris-a251801a2/), [Marvin Martin](https://github.com/MarvinMartin24) |
-| Discussions-To | https://github.com/ethereum/eips/issues/#number                                                                                 |
-| Status         | Draft                                                                                                                           |
-| Type           | Standards Track                                                                                                                 |
-| Category       | ERC                                                                                                                             |
-| Created        | 2022-01-12                                                                                                                      |
-| Requires       | [165](https://eips.ethereum.org/EIPS/eip-165)                                                                                   |
+# Non-Tradable Token Standard
 
 <!-- AUTO-GENERATED-CONTENT:START (TOC) -->
 - [Simple Summary](#simple-summary)
