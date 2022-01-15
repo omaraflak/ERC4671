@@ -24,6 +24,9 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
     // Token symbol
     string private _symbol;
 
+    // Total number of tokens emited
+    uint256 private _total;
+
     // Contract creator
     address private _creator;
 
@@ -86,6 +89,11 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
         return "";
     }
 
+    /// @return Total number of tokens emited by the contract
+    function total() public view virtual override returns (uint256) {
+        return _total;
+    }
+
     /// @param owner Address of the token's owner
     /// @param index Index of the token
     /// @return A unique identifier for that token
@@ -134,6 +142,7 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
     function _mint(address owner) internal virtual {
         Token[] storage tokens = _balances[owner];
         tokens.push(Token(msg.sender, true));
+        _total += 1;
     }
 
     /// @return True if the caller is the contract's creator, false otherwise

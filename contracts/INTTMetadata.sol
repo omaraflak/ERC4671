@@ -14,4 +14,7 @@ interface INTTMetadata {
     /// @param index Index of the token
     /// @return URI for the token
     function tokenURI(address owner, uint256 index) external view returns (string memory);
+
+    /// @return Total number of tokens emited by the contract
+    function total() external view returns (uint256);
 }
