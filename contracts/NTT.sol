@@ -24,7 +24,7 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
     // Token symbol
     string private _symbol;
 
-    // Total number of tokens emited
+    // Total number of tokens emitted
     uint256 private _total;
 
     // Contract creator
@@ -89,7 +89,7 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
         return "";
     }
 
-    /// @return Total number of tokens emited by the contract
+    /// @return Total number of tokens emitted by the contract
     function total() public view virtual override returns (uint256) {
         return _total;
     }

@@ -112,7 +112,7 @@ interface INTTMetadata {
     /// @return URI for the token
     function tokenURI(address owner, uint256 index) external view returns (string memory);
 
-    /// @return Total number of tokens emited by the contract
+    /// @return Total number of tokens emitted by the contract
     function total() external view returns (uint256);
 }
 ```
@@ -194,7 +194,7 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
     // Token symbol
     string private _symbol;
 
-    // Total number of tokens emited
+    // Total number of tokens emitted
     uint256 private _total;
 
     // Contract creator
@@ -259,7 +259,7 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
         return "";
     }
 
-    /// @return Total number of tokens emited by the contract
+    /// @return Total number of tokens emitted by the contract
     function total() public view virtual override returns (uint256) {
         return _total;
     }
