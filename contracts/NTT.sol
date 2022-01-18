@@ -135,7 +135,7 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
     function _invalidate(address owner, uint256 index) internal virtual {
         Token storage token = _getTokenOrRevert(owner, index);
         token.valid = false;
-        emit Invalidated(owner, index);
+        emit Invalidated(msg.sender, owner, index);
     }
 
     /// @notice Mint a new token
