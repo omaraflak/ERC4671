@@ -135,6 +135,7 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
     function _invalidate(address owner, uint256 index) internal virtual {
         Token storage token = _getTokenOrRevert(owner, index);
         token.valid = false;
+        emit Invalidated(owner, index);
     }
 
     /// @notice Mint a new token
@@ -143,6 +144,7 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
         Token[] storage tokens = _balances[owner];
         tokens.push(Token(msg.sender, true));
         _total += 1;
+        emit Minted(msg.sender, owner, tokens.length);
     }
 
     /// @return True if the caller is the contract's creator, false otherwise
