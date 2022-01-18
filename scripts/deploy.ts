@@ -1,4 +1,6 @@
-import { contractFactory } from "./utils"
+import { getContractFactory } from "./utils"
+
+const contractFactory = getContractFactory("bin/EIPCreatorBadge.abi", "bin/EIPCreatorBadge.bin")
 
 contractFactory.deploy().then(contract => {
     console.log("tx hash:", contract.deployTransaction.hash)

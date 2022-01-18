@@ -8,7 +8,8 @@
     "docs": "md-magic --path '*.md' --ignore 'node_modules'",
     "build": "node_modules/typescript/bin/tsc scripts/*.ts --outDir bin",
     "deploy": "npm run build && node bin/deploy.js",
-    "interact": "npm run build && node bin/interact.js"
+    "interact": "npm run build && node bin/interact.js",
+    "tokens": "npm run build && node bin/tokens.js"
   },
   "author": "Omar Aflak",
   "license": "MIT",
