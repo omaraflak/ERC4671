@@ -2,9 +2,7 @@
   "name": "ntt",
   "version": "1.0.0",
   "description": "Non-Tradable Token Standard",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "docs": "md-magic --path '*.md' --ignore 'node_modules'",
     "build": "node_modules/typescript/bin/tsc scripts/*.ts --outDir bin",
     "deploy": "npm run build && node bin/deploy.js",
