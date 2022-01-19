@@ -76,6 +76,11 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
         return _symbol;
     }
 
+    /// @return Total number of tokens emitted by the contract
+    function total() public view virtual override returns (uint256) {
+        return _total;
+    }
+
     /// @notice URI to query to get the token's metadata
     /// @param owner Address of the token's owner
     /// @param index Index of the token
@@ -87,11 +92,6 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
             return string(abi.encodePacked(baseURI, tokenId(owner, index)));
         }
         return "";
-    }
-
-    /// @return Total number of tokens emitted by the contract
-    function total() public view virtual override returns (uint256) {
-        return _total;
     }
 
     /// @param owner Address of the token's owner
@@ -144,7 +144,7 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
         Token[] storage tokens = _balances[owner];
         tokens.push(Token(msg.sender, true));
         _total += 1;
-        emit Minted(msg.sender, owner, tokens.length);
+        emit Minted(msg.sender, owner, tokens.length - 1);
     }
 
     /// @return True if the caller is the contract's creator, false otherwise
