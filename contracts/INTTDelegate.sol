@@ -2,7 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-interface INTTDelegate {
+import "./INTT.sol";
+
+interface INTTDelegate is INTT {
     /// @notice Grant one-time minting right to `operator` for `owner`
     /// An allowed operator can call the function to transfer rights.
     /// @param operator Address allowed to mint a token
@@ -22,4 +24,9 @@ interface INTTDelegate {
     /// @notice Mint tokens to multiple addresses. Caller must have the right to mint for all owners.
     /// @param owners Addresses for whom the tokens are minted
     function mintBatch(address[] memory owners) external;
+
+    /// @notice Get the issuer of a token
+    /// @param tokenId Identifier of the token
+    /// @return Address who minted `tokenId`
+    function issuerOf(uint256 tokenId) external view returns (address);
 }

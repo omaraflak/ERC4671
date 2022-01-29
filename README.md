@@ -19,7 +19,9 @@ requires: 165
 - [Specification](#specification)
   - [Extensions](#extensions)
     - [Metadata](#metadata)
+    - [Enumerable](#enumerable)
     - [Delegation](#delegation)
+    - [Consensus](#consensus)
 - [Rationale](#rationale)
   - [On-chain vs Off-chain](#on-chain-vs-off-chain)
 - [Implementation](#implementation)
@@ -61,28 +63,31 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 
 interface INTT is IERC165 {
-    /// Event emitted when a token is minted by `issuer` to `owner`
-    event Minted(address issuer, address owner, uint256 index);
+    /// Event emitted when a token `tokenId` is minted for `owner`
+    event Minted(address owner, uint256 tokenId);
 
-    /// Event emitted when token `index` of `owner` is invalidated by `operator`
-    event Invalidated(address operator, address owner, uint256 index);
+    /// Event emitted when token `tokenId` of `owner` is invalidated
+    event Invalidated(address owner, uint256 tokenId);
 
     /// @notice Count all tokens assigned to an owner
     /// @param owner Address for whom to query the balance
     /// @return Number of tokens owned by `owner`
     function balanceOf(address owner) external view returns (uint256);
 
-    /// @notice Check if a token hasn't been invalidated
-    /// @param owner Address for whom to check the token validity
-    /// @param index Index of the token
-    /// @return True if the token is valid, False otherwise
-    function isValid(address owner, uint256 index) external view returns (bool);
+    /// @notice Get owner of a token
+    /// @param tokenId Identifier of the token
+    /// @return Address of the owner of `tokenId`
+    function ownerOf(uint256 tokenId) external view returns (address);
 
-    /// @notice Get the issuer of a token
-    /// @param owner Address for whom to check the token issuer
-    /// @param owner Index of the token
-    /// @return Address of the issuer
-    function issuerOf(address owner, uint256 index) external view returns (address);
+    /// @notice Check if a token hasn't been invalidated
+    /// @param tokenId Identifier of the token
+    /// @return True if the token is valid, false otherwise
+    function isValid(uint256 tokenId) external view returns (bool);
+
+    /// @notice Check if an address owns a valid token in the contract
+    /// @param owner Address for whom to check the ownership
+    /// @return True if `owner` has a valid token, false otherwise
+    function hasValid(address owner) external view returns (bool);
 }
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
@@ -100,28 +105,52 @@ An interface allowing to add metadata linked to each token, as in ERC721.
 
 pragma solidity ^0.8.0;
 
-interface INTTMetadata {
+import "./INTT.sol";
+
+interface INTTMetadata is INTT {
     /// @return Descriptive name of the tokens in this contract
     function name() external view returns (string memory);
 
     /// @return An abbreviated name of the tokens in this contract
     function symbol() external view returns (string memory);
 
+    /// @notice URI to query to get the token's metadata
+    /// @param tokenId Identifier of the token
+    /// @return URI for the token
+    function tokenURI(uint256 tokenId) external view returns (string memory);
+}
+```
+<!-- AUTO-GENERATED-CONTENT:END -->
+
+#### Enumerable
+
+An interface allowing to enumerate the tokens of an owner, as in ERC721.
+
+<!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/INTTenumerable.sol) -->
+<!-- The below code snippet is automatically added from ./contracts/INTTenumerable.sol -->
+```solidity
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.0;
+
+import "./INTT.sol";
+
+interface INTTEnumerable is INTT {
     /// @return Total number of tokens emitted by the contract
     function total() external view returns (uint256);
 
-    /// @notice URI to query to get the token's metadata
-    /// @param owner Address of the token's owner
+    /// @notice Get the tokenId of a token using its position in the owner's list
+    /// @param owner Address for whom to get the token
     /// @param index Index of the token
-    /// @return URI for the token
-    function tokenURI(address owner, uint256 index) external view returns (string memory);
+    /// @return tokenId of the token
+    function tokenOfOwnerByIndex(address owner, uint index) external view returns (uint256);
 }
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
 
 #### Delegation
 
-An interface to standardize delegation rights of token minting.
+An interface allowing delegation rights of token minting.
 
 <!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/INTTDelegate.sol) -->
 <!-- The below code snippet is automatically added from ./contracts/INTTDelegate.sol -->
@@ -130,7 +159,9 @@ An interface to standardize delegation rights of token minting.
 
 pragma solidity ^0.8.0;
 
-interface INTTDelegate {
+import "./INTT.sol";
+
+interface INTTDelegate is INTT {
     /// @notice Grant one-time minting right to `operator` for `owner`
     /// An allowed operator can call the function to transfer rights.
     /// @param operator Address allowed to mint a token
@@ -150,6 +181,40 @@ interface INTTDelegate {
     /// @notice Mint tokens to multiple addresses. Caller must have the right to mint for all owners.
     /// @param owners Addresses for whom the tokens are minted
     function mintBatch(address[] memory owners) external;
+
+    /// @notice Get the issuer of a token
+    /// @param tokenId Identifier of the token
+    /// @return Address who minted `tokenId`
+    function issuerOf(uint256 tokenId) external view returns (address);
+}
+```
+<!-- AUTO-GENERATED-CONTENT:END -->
+
+#### Consensus
+
+An interface allowing minting/invalidation of tokens based on a consensus of a predefined set of addresses.
+
+<!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/INTTConsensus.sol) -->
+<!-- The below code snippet is automatically added from ./contracts/INTTConsensus.sol -->
+```solidity
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.0;
+
+import "./INTT.sol";
+
+interface INTTConsensus is INTT {
+    /// @notice Get voters addresses for this consensus contract
+    /// @return Addresses of the voters
+    function voters() external view returns (address[] memory);
+
+    /// @notice Cast a vote to mint a token for a specific address
+    /// @param owner Address for whom to mint the token
+    function approveMint(address owner) external;
+
+    /// @notice Cast a vote to invalidate a token for a specific address
+    /// @param owner Address for whom to mint the token
+    function approveInvalidate(address owner) external;
 }
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
@@ -178,8 +243,9 @@ import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 
 import "./INTT.sol";
 import "./INTTMetadata.sol";
+import "./INTTEnumerable.sol";
 
-abstract contract NTT is INTT, INTTMetadata, ERC165 {
+abstract contract NTT is INTT, INTTMetadata, INTTEnumerable, ERC165 {
     // Token data
     struct Token {
         address issuer;
@@ -187,7 +253,13 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
     }
 
     // Mapping from owner to tokens
-    mapping (address => Token[]) private _balances;
+    mapping(address => mapping(uint256 => Token)) private _tokens;
+
+    // Mapping from tokenId to owner
+    mapping(uint256 => address) private _owners;
+
+    // Mapping from owner to token ids
+    mapping(address => uint256[]) private _indexedTokenIds;
 
     // Token name
     string private _name;
@@ -210,88 +282,85 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
     /// @notice Count all tokens assigned to an owner
     /// @param owner Address for whom to query the balance
     /// @return Number of tokens owned by `owner`
-    function balanceOf(address owner) public view virtual override returns (uint256) {
-        require(owner != address(0), "balance query for the zero address");
-        return _balances[owner].length;
+    function balanceOf(address owner) public view returns (uint256) {
+        return _indexedTokenIds[owner].length;
     }
 
-    /// @notice Check if a token is hasn't been invalidated
-    /// @param owner Address for whom to check the token validity
+    /// @notice Get owner of a token
+    /// @param tokenId Identifier of the token
+    /// @return Address of the owner of `tokenId`
+    function ownerOf(uint256 tokenId) public view returns (address) {
+        return _owners[tokenId];
+    }
+
+    /// @notice Check if a token hasn't been invalidated
+    /// @param tokenId Identifier of the token
     /// @return True if the token is valid, false otherwise
-    function isValid(address owner, uint256 index) public view virtual override returns (bool) {
-        return _getTokenOrRevert(owner, index).valid;
+    function isValid(uint256 tokenId) public view returns (bool) {
+        Token storage token = _getTokenOrRevert(tokenId);
+        return token.valid;
     }
 
-    /// @notice Get the issuer of a token
-    /// @param owner Address for whom to check the token issuer
-    /// @param owner Index of the token
-    /// @return Address of the issuer
-    function issuerOf(address owner, uint256 index) public view virtual override returns (address) {
-        return _getTokenOrRevert(owner, index).issuer;
-    }
-
-    /// @notice Get all the tokens of an account
-    /// @param owner Address for whom to get the tokens
-    /// @return Array of tokens
-    function tokensOf(address owner) public view virtual returns (Token[] memory) {
-        return _balances[owner];
-    }
-
-    /// @return Descriptive name of the tokens in this contract
-    function name() public view virtual override returns (string memory) {
-        return _name;
-    }
-
-    /// @return An abbreviated name of the tokens in this contract
-    function symbol() public view virtual override returns (string memory) {
-        return _symbol;
-    }
-
-    /// @return Total number of tokens emitted by the contract
-    function total() public view virtual override returns (uint256) {
-        return _total;
-    }
-
-    /// @notice URI to query to get the token's metadata
-    /// @param owner Address of the token's owner
-    /// @param index Index of the token
-    /// @return URI for the token
-    function tokenURI(address owner, uint256 index) public view virtual override returns (string memory) {
-        _getTokenOrRevert(owner, index);
-        bytes memory baseURI = bytes(_baseURI());
-        if (baseURI.length > 0) {
-            return string(abi.encodePacked(baseURI, tokenId(owner, index)));
-        }
-        return "";
-    }
-
-    /// @param owner Address of the token's owner
-    /// @param index Index of the token
-    /// @return A unique identifier for that token
-    function tokenId(address owner, uint256 index) public pure virtual returns (string memory) {
-        return string(abi.encodePacked(
-            Strings.toHexString(uint256(uint160(owner)), 20),
-            Strings.toHexString(index, 32)
-        ));
-    }
-
-    /// @notice Check if a given address owns a valid token
-    /// @param owner Address for whom to check
+    /// @notice Check if an address owns a valid token in the contract
+    /// @param owner Address for whom to check the ownership
     /// @return True if `owner` has a valid token, false otherwise
-    function hasValidToken(address owner) external view virtual returns (bool) {
-        Token[] storage tokens = _balances[owner];
-        for (uint i=0; i<tokens.length; i++) {
-            if (tokens[i].valid) {
+    function hasValid(address owner) public view returns (bool) {
+        uint256[] storage tokenIds = _indexedTokenIds[owner];
+        for (uint256 i=0; i<tokenIds.length; i++) {
+            Token storage token = _tokens[owner][tokenIds[i]];
+            assert(token.issuer == owner);
+            if (token.valid) {
                 return true;
             }
         }
         return false;
     }
 
+    /// @return Descriptive name of the tokens in this contract
+    function name() public view returns (string memory) {
+        return _name;
+    }
+
+    /// @return An abbreviated name of the tokens in this contract
+    function symbol() public view returns (string memory) {
+        return _symbol;
+    }
+
+    /// @notice URI to query to get the token's metadata
+    /// @param tokenId Identifier of the token
+    /// @return URI for the token
+    function tokenURI(uint256 tokenId) public view returns (string memory) {
+        _getTokenOrRevert(tokenId);
+        bytes memory baseURI = bytes(_baseURI());
+        if (baseURI.length > 0) {
+            return string(abi.encodePacked(
+                baseURI,
+                Strings.toHexString(tokenId, 32)
+            ));
+        }
+        return "";
+    }
+
+    /// @return Total number of tokens emitted by the contract
+    function total() public view returns (uint256) {
+        return _total;
+    }
+
+    /// @notice Get the tokenId of a token using its position in the owner's list
+    /// @param owner Address for whom to get the token
+    /// @param index Index of the token
+    /// @return tokenId of the token
+    function tokenOfOwnerByIndex(address owner, uint index) public view returns (uint256) {
+        uint256[] storage ids = _indexedTokenIds[owner];
+        require(index < ids.length, "Token does not exist");
+        return ids[index];
+    }
+
     function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {
         return 
             interfaceId == type(INTT).interfaceId ||
             interfaceId == type(INTTMetadata).interfaceId ||
+            interfaceId == type(INTTEnumerable).interfaceId ||
             super.supportsInterface(interfaceId);
     }
 
@@ -302,20 +371,23 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
     }
 
     /// @notice Mark the token as invalidated
-    /// @param owner Address for whom to invalidate the token
-    function _invalidate(address owner, uint256 index) internal virtual {
-        Token storage token = _getTokenOrRevert(owner, index);
+    /// @param tokenId Identifier of the token
+    function _invalidate(uint256 tokenId) internal virtual {
+        Token storage token = _getTokenOrRevert(tokenId);
         token.valid = false;
-        emit Invalidated(msg.sender, owner, index);
+        emit Invalidated(_owners[tokenId], tokenId);
     }
 
     /// @notice Mint a new token
     /// @param owner Address for whom to assign the token
-    function _mint(address owner) internal virtual {
-        Token[] storage tokens = _balances[owner];
-        tokens.push(Token(msg.sender, true));
+    /// @return tokenId Identifier of the minted token
+    function _mint(address owner) internal virtual returns (uint256 tokenId) {
+        tokenId = _total;
+        _tokens[owner][tokenId] = Token(msg.sender, true);
+        _owners[tokenId] = owner;
+        _indexedTokenIds[owner].push(tokenId);
         _total += 1;
-        emit Minted(msg.sender, owner, tokens.length - 1);
+        emit Minted(owner, tokenId);
     }
 
     /// @return True if the caller is the contract's creator, false otherwise
@@ -324,13 +396,14 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
     }
 
     /// @notice Retrieve a Token or revert if it does not exist
-    /// @param owner Address of the token's owner
-    /// @param index Index of the token
+    /// @param tokenId Identifier of the token
     /// @return The Token struct
-    function _getTokenOrRevert(address owner, uint256 index) private view returns (Token storage) {
-        Token[] storage tokens = _balances[owner];
-        require(index < tokens.length, "NTT does not exist");
-        return tokens[index];
+    function _getTokenOrRevert(uint256 tokenId) private view returns (Token storage) {
+        address owner = _owners[tokenId];
+        require(owner != address(0), "Token does not exist");
+        Token storage token = _tokens[owner][tokenId];
+        assert(token.issuer != address(0));
+        return token;
     }
 }
 ```
@@ -345,8 +418,10 @@ abstract contract NTT is INTT, INTTMetadata, ERC165 {
 
 pragma solidity ^0.8.0;
 
-import "./INTTDelegate.sol";
+import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
+
 import "./NTT.sol";
+import "./INTTDelegate.sol";
 
 abstract contract NTTDelegate is NTT, INTTDelegate {
     // Mapping from operator to list of owners
@@ -402,7 +477,7 @@ abstract contract NTTDelegate is NTT, INTTDelegate {
         return isDelegate(msg.sender, owner);
     }
 
-    function supportsInterface(bytes4 interfaceId) public view virtual override(NTT) returns (bool) {
+    function supportsInterface(bytes4 interfaceId) public view virtual override(IERC165, NTT) returns (bool) {
         return 
             interfaceId == type(INTTDelegate).interfaceId ||
             super.supportsInterface(interfaceId);

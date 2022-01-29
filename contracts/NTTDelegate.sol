@@ -2,8 +2,10 @@
 
 pragma solidity ^0.8.0;
 
-import "./INTTDelegate.sol";
+import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
+
 import "./NTT.sol";
+import "./INTTDelegate.sol";
 
 abstract contract NTTDelegate is NTT, INTTDelegate {
     // Mapping from operator to list of owners
@@ -59,7 +61,7 @@ abstract contract NTTDelegate is NTT, INTTDelegate {
         return isDelegate(msg.sender, owner);
     }
 
-    function supportsInterface(bytes4 interfaceId) public view virtual override(NTT) returns (bool) {
+    function supportsInterface(bytes4 interfaceId) public view virtual override(IERC165, NTT) returns (bool) {
         return 
             interfaceId == type(INTTDelegate).interfaceId ||
             super.supportsInterface(interfaceId);
