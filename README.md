@@ -25,9 +25,6 @@ requires: 165
 - [Rationale](#rationale)
   - [On-chain vs Off-chain](#on-chain-vs-off-chain)
 - [Implementation](#implementation)
-  - [NTT](#ntt)
-  - [NTTDelegate](#nttdelegate)
-- [NTT for EIP ?](#ntt-for-eip-)
 - [Copyright](#copyright)
 <!-- AUTO-GENERATED-CONTENT:END -->
 
