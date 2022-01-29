@@ -162,7 +162,7 @@ abstract contract NTT is INTT, INTTMetadata, INTTEnumerable, ERC165 {
     /// @notice Retrieve a Token or revert if it does not exist
     /// @param tokenId Identifier of the token
     /// @return The Token struct
-    function _getTokenOrRevert(uint256 tokenId) private view returns (Token storage) {
+    function _getTokenOrRevert(uint256 tokenId) internal view returns (Token storage) {
         address owner = _owners[tokenId];
         require(owner != address(0), "Token does not exist");
         Token storage token = _tokens[owner][tokenId];

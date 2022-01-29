@@ -61,6 +61,14 @@ abstract contract NTTDelegate is NTT, INTTDelegate {
         return isDelegate(msg.sender, owner);
     }
 
+    /// @notice Get the issuer of a token
+    /// @param tokenId Identifier of the token
+    /// @return Address who minted `tokenId`
+    function issuerOf(uint256 tokenId) public view returns (address) {
+        Token storage token = _getTokenOrRevert(tokenId);
+        return token.issuer;
+    }
+
     function supportsInterface(bytes4 interfaceId) public view virtual override(IERC165, NTT) returns (bool) {
         return 
             interfaceId == type(INTTDelegate).interfaceId ||
