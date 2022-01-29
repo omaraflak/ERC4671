@@ -12,5 +12,5 @@ interface INTTEnumerable is INTT {
     /// @param owner Address for whom to get the token
     /// @param index Index of the token
     /// @return tokenId of the token
-    function tokenOfOwnerByIndex(address owner, uint index) external view returns (uint256);
+    function tokenOfOwnerByIndex(address owner, uint256 index) external view returns (uint256);
 }
