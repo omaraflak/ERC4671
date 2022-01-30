@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.0;
 
-import "./NTTConsensus.sol";
+import "./NTT.sol";
 
-contract EIPCreatorBadge is NTTConsensus {
-    constructor(address[] memory voters) NTTConsensus("EIP Creator Badge", "EIP", voters) {}
+contract EIPCreatorBadge is NTT {
+    constructor() NTT("EIP Creator Badge", "EIP") {}
 
     function giveThatManABadge(address owner) external {
         require(_isCreator(), "You must be the contract creator");
