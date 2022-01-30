@@ -33,13 +33,13 @@ abstract contract NTTConsensus is NTT, INTTConsensus {
 
     /// @notice Get voters addresses for this consensus contract
     /// @return Addresses of the voters
-    function voters() public view returns (address[] memory) {
+    function voters() public view virtual override returns (address[] memory) {
         return _votersArray;
     }
 
     /// @notice Cast a vote to mint a token for a specific address
     /// @param owner Address for whom to mint the token
-    function approveMint(address owner) public {
+    function approveMint(address owner) public virtual override {
         require(_voters[msg.sender], "You are not a voter");
         require(!_mintApprovals[msg.sender][owner], "You already approved this address");
         _mintApprovals[msg.sender][owner] = true;
@@ -52,7 +52,7 @@ abstract contract NTTConsensus is NTT, INTTConsensus {
 
     /// @notice Cast a vote to invalidate a token for a specific address
     /// @param tokenId Identifier of the token to invalidate
-    function approveInvalidate(uint256 tokenId) public {
+    function approveInvalidate(uint256 tokenId) public virtual override {
         require(_voters[msg.sender], "You are not a voter");
         require(!_invalidateApprovals[msg.sender][tokenId], "You already approved this address");
         _invalidateApprovals[msg.sender][tokenId] = true;

@@ -49,21 +49,21 @@ abstract contract NTT is INTT, INTTMetadata, INTTEnumerable, ERC165 {
     /// @notice Count all tokens assigned to an owner
     /// @param owner Address for whom to query the balance
     /// @return Number of tokens owned by `owner`
-    function balanceOf(address owner) public view returns (uint256) {
+    function balanceOf(address owner) public view virtual override returns (uint256) {
         return _indexedTokenIds[owner].length;
     }
 
     /// @notice Get owner of a token
     /// @param tokenId Identifier of the token
     /// @return Address of the owner of `tokenId`
-    function ownerOf(uint256 tokenId) public view returns (address) {
+    function ownerOf(uint256 tokenId) public view virtual override returns (address) {
         return _owners[tokenId];
     }
 
     /// @notice Check if a token hasn't been invalidated
     /// @param tokenId Identifier of the token
     /// @return True if the token is valid, false otherwise
-    function isValid(uint256 tokenId) public view returns (bool) {
+    function isValid(uint256 tokenId) public view virtual override returns (bool) {
         Token storage token = _getTokenOrRevert(tokenId);
         return token.valid;
     }
@@ -71,24 +71,24 @@ abstract contract NTT is INTT, INTTMetadata, INTTEnumerable, ERC165 {
     /// @notice Check if an address owns a valid token in the contract
     /// @param owner Address for whom to check the ownership
     /// @return True if `owner` has a valid token, false otherwise
-    function hasValid(address owner) public view returns (bool) {
+    function hasValid(address owner) public view virtual override returns (bool) {
         return _numberOfValidTokens[owner] > 0;
     }
 
     /// @return Descriptive name of the tokens in this contract
-    function name() public view returns (string memory) {
+    function name() public view virtual override returns (string memory) {
         return _name;
     }
 
     /// @return An abbreviated name of the tokens in this contract
-    function symbol() public view returns (string memory) {
+    function symbol() public view virtual override returns (string memory) {
         return _symbol;
     }
 
     /// @notice URI to query to get the token's metadata
     /// @param tokenId Identifier of the token
     /// @return URI for the token
-    function tokenURI(uint256 tokenId) public view returns (string memory) {
+    function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
         _getTokenOrRevert(tokenId);
         bytes memory baseURI = bytes(_baseURI());
         if (baseURI.length > 0) {
@@ -101,7 +101,7 @@ abstract contract NTT is INTT, INTTMetadata, INTTEnumerable, ERC165 {
     }
 
     /// @return Total number of tokens emitted by the contract
-    function total() public view returns (uint256) {
+    function total() public view override returns (uint256) {
         return _total;
     }
 
@@ -109,7 +109,7 @@ abstract contract NTT is INTT, INTTMetadata, INTTEnumerable, ERC165 {
     /// @param owner Address for whom to get the token
     /// @param index Index of the token
     /// @return tokenId of the token
-    function tokenOfOwnerByIndex(address owner, uint256 index) public view returns (uint256) {
+    function tokenOfOwnerByIndex(address owner, uint256 index) public view virtual override returns (uint256) {
         uint256[] storage ids = _indexedTokenIds[owner];
         require(index < ids.length, "Token does not exist");
         return ids[index];
@@ -162,7 +162,7 @@ abstract contract NTT is INTT, INTTMetadata, INTTEnumerable, ERC165 {
     /// @notice Retrieve a Token or revert if it does not exist
     /// @param tokenId Identifier of the token
     /// @return The Token struct
-    function _getTokenOrRevert(uint256 tokenId) internal view returns (Token storage) {
+    function _getTokenOrRevert(uint256 tokenId) internal view virtual returns (Token storage) {
         address owner = _owners[tokenId];
         require(owner != address(0), "Token does not exist");
         Token storage token = _tokens[owner][tokenId];

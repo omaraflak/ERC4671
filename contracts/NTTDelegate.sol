@@ -46,27 +46,27 @@ abstract contract NTTDelegate is NTT, INTTDelegate {
         }
     }
 
+    /// @notice Get the issuer of a token
+    /// @param tokenId Identifier of the token
+    /// @return Address who minted `tokenId`
+    function issuerOf(uint256 tokenId) public view virtual override returns (address) {
+        Token storage token = _getTokenOrRevert(tokenId);
+        return token.issuer;
+    }
+
     /// @notice Check if an operator is a delegate for a given address
     /// @param operator Address of the operator
     /// @param owner Address of the token's owner
     /// @return True if the `operator` is a delegate for `owner`, false otherwise
-    function isDelegate(address operator, address owner) public view returns (bool) {
+    function isDelegate(address operator, address owner) public view virtual returns (bool) {
         return _allowed[operator][owner];
     }
 
     /// @notice Check if you are a delegate for a given address
     /// @param owner Address of the token's owner
     /// @return True if the caller is a delegate for `owner`, false otherwise
-    function isDelegateOf(address owner) public view returns (bool) {
+    function isDelegateOf(address owner) public view virtual returns (bool) {
         return isDelegate(msg.sender, owner);
-    }
-
-    /// @notice Get the issuer of a token
-    /// @param tokenId Identifier of the token
-    /// @return Address who minted `tokenId`
-    function issuerOf(uint256 tokenId) public view returns (address) {
-        Token storage token = _getTokenOrRevert(tokenId);
-        return token.issuer;
     }
 
     function supportsInterface(bytes4 interfaceId) public view virtual override(IERC165, NTT) returns (bool) {
