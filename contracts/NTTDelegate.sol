@@ -50,8 +50,7 @@ abstract contract NTTDelegate is NTT, INTTDelegate {
     /// @param tokenId Identifier of the token
     /// @return Address who minted `tokenId`
     function issuerOf(uint256 tokenId) public view virtual override returns (address) {
-        Token storage token = _getTokenOrRevert(tokenId);
-        return token.issuer;
+        return _getTokenOrRevert(tokenId).issuer;
     }
 
     /// @notice Check if an operator is a delegate for a given address

@@ -13,14 +13,12 @@ abstract contract NTT is INTT, INTTMetadata, INTTEnumerable, ERC165 {
     // Token data
     struct Token {
         address issuer;
+        address owner;
         bool valid;
     }
 
-    // Mapping from owner to tokens
-    mapping(address => mapping(uint256 => Token)) private _tokens;
-
-    // Mapping from tokenId to owner
-    mapping(uint256 => address) private _owners;
+    // Mapping from tokenId to token
+    mapping(uint256 => Token) private _tokens;
 
     // Mapping from owner to token ids
     mapping(address => uint256[]) private _indexedTokenIds;
@@ -57,15 +55,14 @@ abstract contract NTT is INTT, INTTMetadata, INTTEnumerable, ERC165 {
     /// @param tokenId Identifier of the token
     /// @return Address of the owner of `tokenId`
     function ownerOf(uint256 tokenId) public view virtual override returns (address) {
-        return _owners[tokenId];
+        return _getTokenOrRevert(tokenId).owner;
     }
 
     /// @notice Check if a token hasn't been invalidated
     /// @param tokenId Identifier of the token
     /// @return True if the token is valid, false otherwise
     function isValid(uint256 tokenId) public view virtual override returns (bool) {
-        Token storage token = _getTokenOrRevert(tokenId);
-        return token.valid;
+        return _getTokenOrRevert(tokenId).valid;
     }
 
     /// @notice Check if an address owns a valid token in the contract
@@ -135,10 +132,9 @@ abstract contract NTT is INTT, INTTMetadata, INTTEnumerable, ERC165 {
         Token storage token = _getTokenOrRevert(tokenId);
         require(token.valid, "Token is already invalid");
         token.valid = false;
-        address owner = _owners[tokenId];
-        _numberOfValidTokens[owner] -= 1;
-        assert(_numberOfValidTokens[owner] >= 0);
-        emit Invalidated(owner, tokenId);
+        _numberOfValidTokens[token.owner] -= 1;
+        assert(_numberOfValidTokens[token.owner] >= 0);
+        emit Invalidated(token.owner, tokenId);
     }
 
     /// @notice Mint a new token
@@ -146,8 +142,7 @@ abstract contract NTT is INTT, INTTMetadata, INTTEnumerable, ERC165 {
     /// @return tokenId Identifier of the minted token
     function _mint(address owner) internal virtual returns (uint256 tokenId) {
         tokenId = _total;
-        _tokens[owner][tokenId] = Token(msg.sender, true);
-        _owners[tokenId] = owner;
+        _tokens[tokenId] = Token(msg.sender, owner, true);
         _indexedTokenIds[owner].push(tokenId);
         _numberOfValidTokens[owner] += 1;
         _total += 1;
@@ -163,10 +158,8 @@ abstract contract NTT is INTT, INTTMetadata, INTTEnumerable, ERC165 {
     /// @param tokenId Identifier of the token
     /// @return The Token struct
     function _getTokenOrRevert(uint256 tokenId) internal view virtual returns (Token storage) {
-        address owner = _owners[tokenId];
-        require(owner != address(0), "Token does not exist");
-        Token storage token = _tokens[owner][tokenId];
-        assert(token.issuer != address(0));
+        Token storage token = _tokens[tokenId];
+        require(token.owner != address(0), "Token does not exist");
         return token;
     }
 }
