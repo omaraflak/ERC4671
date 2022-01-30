@@ -25,6 +25,9 @@ abstract contract NTT is INTT, INTTMetadata, INTTEnumerable, ERC165 {
     // Mapping from owner to token ids
     mapping(address => uint256[]) private _indexedTokenIds;
 
+    // Mapping from owner to number of valid tokens
+    mapping(address => uint256) private _numberOfValidTokens;
+
     // Token name
     string private _name;
 
@@ -69,15 +72,7 @@ abstract contract NTT is INTT, INTTMetadata, INTTEnumerable, ERC165 {
     /// @param owner Address for whom to check the ownership
     /// @return True if `owner` has a valid token, false otherwise
     function hasValid(address owner) public view returns (bool) {
-        uint256[] storage tokenIds = _indexedTokenIds[owner];
-        for (uint256 i=0; i<tokenIds.length; i++) {
-            Token storage token = _tokens[owner][tokenIds[i]];
-            assert(token.issuer == owner);
-            if (token.valid) {
-                return true;
-            }
-        }
-        return false;
+        return _numberOfValidTokens[owner] > 0;
     }
 
     /// @return Descriptive name of the tokens in this contract
@@ -138,8 +133,12 @@ abstract contract NTT is INTT, INTTMetadata, INTTEnumerable, ERC165 {
     /// @param tokenId Identifier of the token
     function _invalidate(uint256 tokenId) internal virtual {
         Token storage token = _getTokenOrRevert(tokenId);
+        require(token.valid, "Token is already invalid");
         token.valid = false;
-        emit Invalidated(_owners[tokenId], tokenId);
+        address owner = _owners[tokenId];
+        _numberOfValidTokens[owner] -= 1;
+        assert(_numberOfValidTokens[owner] >= 0);
+        emit Invalidated(owner, tokenId);
     }
 
     /// @notice Mint a new token
@@ -150,6 +149,7 @@ abstract contract NTT is INTT, INTTMetadata, INTTEnumerable, ERC165 {
         _tokens[owner][tokenId] = Token(msg.sender, true);
         _owners[tokenId] = owner;
         _indexedTokenIds[owner].push(tokenId);
+        _numberOfValidTokens[owner] += 1;
         _total += 1;
         emit Minted(owner, tokenId);
     }
