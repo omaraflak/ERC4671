@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.0;
 
-import "./NTT.sol";
+import "./ERC4671.sol";
 
-contract EIPCreatorBadge is NTT {
-    constructor() NTT("EIP Creator Badge", "EIP") {}
+contract EIPCreatorBadge is ERC4671 {
+    constructor() ERC4671("EIP Creator Badge", "EIP") {}
 
     function giveThatManABadge(address owner) external {
         require(_isCreator(), "You must be the contract creator");

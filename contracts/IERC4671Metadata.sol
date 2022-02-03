@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import "./INTT.sol";
+import "./IERC4671.sol";
 
-interface INTTMetadata is INTT {
+interface IERC4671Metadata is IERC4671 {
     /// @return Descriptive name of the tokens in this contract
     function name() external view returns (string memory);
 

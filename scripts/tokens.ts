@@ -5,7 +5,7 @@ const addresses = [
 ]
 
 addresses.forEach((address: string) => {
-    const contract = getContract(address, "bin/NTT.abi")
+    const contract = getContract(address, "bin/ERC4671.abi")
     const promises = [
         contract.functions.name(),
         contract.functions.symbol(),

@@ -4,9 +4,9 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 
-import "./INTTStore.sol";
+import "./IERC4671Store.sol";
 
-contract NTTStore is INTTStore, ERC165 {
+contract ERC4671Store is IERC4671Store, ERC165 {
     // Mapping from owner to NTT contracts
     mapping(address => address[]) private _records;
 
@@ -45,7 +45,7 @@ contract NTTStore is INTTStore, ERC165 {
 
     function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {
         return 
-            interfaceId == type(INTTStore).interfaceId ||
+            interfaceId == type(IERC4671Store).interfaceId ||
             super.supportsInterface(interfaceId);
     }
 

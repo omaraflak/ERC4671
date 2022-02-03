@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 
-interface INTT is IERC165 {
+interface IERC4671 is IERC165 {
     /// Event emitted when a token `tokenId` is minted for `owner`
     event Minted(address owner, uint256 tokenId);
 

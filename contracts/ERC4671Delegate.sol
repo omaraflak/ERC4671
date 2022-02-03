@@ -4,10 +4,10 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 
-import "./NTT.sol";
-import "./INTTDelegate.sol";
+import "./ERC4671.sol";
+import "./IERC4671Delegate.sol";
 
-abstract contract NTTDelegate is NTT, INTTDelegate {
+abstract contract ERC4671Delegate is ERC4671, IERC4671Delegate {
     // Mapping from operator to list of owners
     mapping (address => mapping(address => bool)) _allowed;
 
@@ -68,9 +68,9 @@ abstract contract NTTDelegate is NTT, INTTDelegate {
         return isDelegate(msg.sender, owner);
     }
 
-    function supportsInterface(bytes4 interfaceId) public view virtual override(IERC165, NTT) returns (bool) {
+    function supportsInterface(bytes4 interfaceId) public view virtual override(IERC165, ERC4671) returns (bool) {
         return 
-            interfaceId == type(INTTDelegate).interfaceId ||
+            interfaceId == type(IERC4671Delegate).interfaceId ||
             super.supportsInterface(interfaceId);
     }
 

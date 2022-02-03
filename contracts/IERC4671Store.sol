@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 
-interface INTTStore is IERC165 {
+interface IERC4671Store is IERC165 {
     // Event emitted when a NTT contract is added to the owner's records
     event Added(address owner, address ntt);
 

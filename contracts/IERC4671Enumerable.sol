@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import "./INTT.sol";
+import "./IERC4671.sol";
 
-interface INTTEnumerable is INTT {
+interface IERC4671Enumerable is IERC4671 {
     /// @return Total number of tokens emitted by the contract
     function total() external view returns (uint256);
 

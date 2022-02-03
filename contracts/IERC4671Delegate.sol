@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import "./INTT.sol";
+import "./IERC4671.sol";
 
-interface INTTDelegate is INTT {
+interface IERC4671Delegate is IERC4671 {
     /// @notice Grant one-time minting right to `operator` for `owner`
     /// An allowed operator can call the function to transfer rights.
     /// @param operator Address allowed to mint a token

@@ -4,10 +4,10 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 
-import "./NTT.sol";
-import "./INTTConsensus.sol";
+import "./ERC4671.sol";
+import "./IERC4671Consensus.sol";
 
-abstract contract NTTConsensus is NTT, INTTConsensus {
+abstract contract ERC4671Consensus is ERC4671, IERC4671Consensus {
     // Consensus voters addresses
     mapping(address => bool) private _voters;
     address[] private _votersArray;
@@ -24,7 +24,7 @@ abstract contract NTTConsensus is NTT, INTTConsensus {
     // Mapping from tokenId to invalidation counts
     mapping(uint256 => uint256) private _invalidateApprovalCounts;
 
-    constructor (string memory name_, string memory symbol_, address[] memory voters_) NTT(name_, symbol_) {
+    constructor (string memory name_, string memory symbol_, address[] memory voters_) ERC4671(name_, symbol_) {
         _votersArray = voters_;
         for (uint256 i=0; i<voters_.length; i++) {
             _voters[voters_[i]] = true;
@@ -63,9 +63,9 @@ abstract contract NTTConsensus is NTT, INTTConsensus {
         }
     }
 
-    function supportsInterface(bytes4 interfaceId) public view virtual override(IERC165, NTT) returns (bool) {
+    function supportsInterface(bytes4 interfaceId) public view virtual override(IERC165, ERC4671) returns (bool) {
         return 
-            interfaceId == type(INTTConsensus).interfaceId ||
+            interfaceId == type(IERC4671Consensus).interfaceId ||
             super.supportsInterface(interfaceId);
     }
 

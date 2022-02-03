@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import "./INTT.sol";
+import "./IERC4671.sol";
 
-interface INTTConsensus is INTT {
+interface IERC4671Consensus is IERC4671 {
     /// @notice Get voters addresses for this consensus contract
     /// @return Addresses of the voters
     function voters() external view returns (address[] memory);

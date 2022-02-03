@@ -5,11 +5,11 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 
-import "./INTT.sol";
-import "./INTTMetadata.sol";
-import "./INTTEnumerable.sol";
+import "./IERC4671.sol";
+import "./IERC4671Metadata.sol";
+import "./IERC4671Enumerable.sol";
 
-abstract contract NTT is INTT, INTTMetadata, INTTEnumerable, ERC165 {
+abstract contract ERC4671 is IERC4671, IERC4671Metadata, IERC4671Enumerable, ERC165 {
     // Token data
     struct Token {
         address issuer;
@@ -114,9 +114,9 @@ abstract contract NTT is INTT, INTTMetadata, INTTEnumerable, ERC165 {
 
     function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {
         return 
-            interfaceId == type(INTT).interfaceId ||
-            interfaceId == type(INTTMetadata).interfaceId ||
-            interfaceId == type(INTTEnumerable).interfaceId ||
+            interfaceId == type(IERC4671).interfaceId ||
+            interfaceId == type(IERC4671Metadata).interfaceId ||
+            interfaceId == type(IERC4671Enumerable).interfaceId ||
             super.supportsInterface(interfaceId);
     }
 
