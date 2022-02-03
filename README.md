@@ -17,11 +17,9 @@ requires: 165
 - [Abstract](#abstract)
 - [Motivation](#motivation)
 - [Specification](#specification)
-  - [Extensions](#extensions)
-    - [Metadata](#metadata)
-    - [Enumerable](#enumerable)
-    - [Delegation](#delegation)
-    - [Consensus](#consensus)
+  - [NTT](#ntt)
+    - [Extensions](#extensions)
+  - [NTT Store](#ntt-store)
 - [Rationale](#rationale)
   - [On-chain vs Off-chain](#on-chain-vs-off-chain)
 - [Implementation](#implementation)
@@ -43,6 +41,8 @@ Each of them made their own smart contracts, with different implementations. We 
 By providing a common interface for this type of tokens, we allow more applications to be developed and we position blockchain technology as a standard gateway for verification of personal possessions.
 
 ## Specification
+
+### NTT
 
 A single NTT contract, is seen as representing one type of badge by one authority. For instance, one NTT contract for PSN achievements, another for Ethereum EIP creators, and so on...
 
@@ -89,42 +89,9 @@ interface IERC4671 is IERC165 {
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
 
-NTTs are meant to be fetched by third-parties, which is why there need to be a convienent way for a user to expose some or all of their NTTs. We achieve this result using a store which must implement the following interface.
+#### Extensions
 
-<!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/IERC4671Store.sol) -->
-<!-- The below code snippet is automatically added from ./contracts/IERC4671Store.sol -->
-```solidity
-// SPDX-License-Identifier: MIT
-
-pragma solidity ^0.8.0;
-
-import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
-
-interface IERC4671Store is IERC165 {
-    // Event emitted when a NTT contract is added to the owner's records
-    event Added(address owner, address ntt);
-
-    // Event emitted when a NTT contract is removed from the owner's records
-    event Removed(address owner, address ntt);
-
-    /// @notice Add a NTT contract address to the caller's record
-    /// @param ntt Address of the NTT contract to add
-    function add(address ntt) external;
-
-    /// @notice Remove a NTT contract from the caller's record
-    /// @param ntt Address of the NTT contract to remove
-    function remove(address ntt) external;
-
-    /// @notice Get all the NTT contracts for a given owner
-    /// @param owner Address for which to retrieve the NTT contracts
-    function get(address owner) external view returns (address[] memory);
-}
-```
-<!-- AUTO-GENERATED-CONTENT:END -->
-
-### Extensions
-
-#### Metadata
+##### Metadata
 
 An interface allowing to add metadata linked to each token, as in ERC721.
 
@@ -152,7 +119,7 @@ interface IERC4671Metadata is IERC4671 {
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
 
-#### Enumerable
+##### Enumerable
 
 An interface allowing to enumerate the tokens of an owner, as in ERC721.
 
@@ -178,7 +145,7 @@ interface IERC4671Enumerable is IERC4671 {
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
 
-#### Delegation
+##### Delegation
 
 An interface allowing delegation rights of token minting.
 
@@ -220,7 +187,7 @@ interface IERC4671Delegate is IERC4671 {
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
 
-#### Consensus
+##### Consensus
 
 An interface allowing minting/invalidation of tokens based on a consensus of a predefined set of addresses.
 
@@ -245,6 +212,41 @@ interface IERC4671Consensus is IERC4671 {
     /// @notice Cast a vote to invalidate a specific token
     /// @param tokenId Identifier of the token to invalidate
     function approveInvalidate(uint256 tokenId) external;
+}
+```
+<!-- AUTO-GENERATED-CONTENT:END -->
+
+### NTT Store
+
+NTTs are meant to be fetched by third-parties, which is why there need to be a convienent way for users to expose some or all of their NTTs. We achieve this result using a store which must implement the following interface.
+
+<!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/IERC4671Store.sol) -->
+<!-- The below code snippet is automatically added from ./contracts/IERC4671Store.sol -->
+```solidity
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
+
+interface IERC4671Store is IERC165 {
+    // Event emitted when a NTT contract is added to the owner's records
+    event Added(address owner, address ntt);
+
+    // Event emitted when a NTT contract is removed from the owner's records
+    event Removed(address owner, address ntt);
+
+    /// @notice Add a NTT contract address to the caller's record
+    /// @param ntt Address of the NTT contract to add
+    function add(address ntt) external;
+
+    /// @notice Remove a NTT contract from the caller's record
+    /// @param ntt Address of the NTT contract to remove
+    function remove(address ntt) external;
+
+    /// @notice Get all the NTT contracts for a given owner
+    /// @param owner Address for which to retrieve the NTT contracts
+    function get(address owner) external view returns (address[] memory);
 }
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
