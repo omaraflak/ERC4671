@@ -88,6 +88,33 @@ interface INTT is IERC165 {
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
 
+NTTs are meant to be fetched by third-parties, which is why there need to be a convienent way for a user to expose some or all of their NTTs. We achieve this result using a store which must implement the following interface.
+
+<!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/INTTStore.sol) -->
+<!-- The below code snippet is automatically added from ./contracts/INTTStore.sol -->
+```solidity
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
+
+interface INTTStore is IERC165 {
+    /// @notice Add a NTT contract address to the caller's record
+    /// @param ntt Address of the NTT contract to add
+    function add(address ntt) external;
+
+    /// @notice Remove a NTT contract from the caller's record
+    /// @param ntt Address of the NTT contract to remove
+    function remove(address ntt) external;
+
+    /// @notice Get all the NTT contracts for a given owner
+    /// @param owner Address for which to retrieve the NTT contracts
+    function get(address owner) external view returns (address[] memory);
+}
+```
+<!-- AUTO-GENERATED-CONTENT:END -->
+
 ### Extensions
 
 #### Metadata
