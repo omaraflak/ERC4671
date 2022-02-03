@@ -5,6 +5,12 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 
 interface INTTStore is IERC165 {
+    // Event emitted when a NTT contract is added to the owner's records
+    event Added(address owner, address ntt);
+
+    // Event emitted when a NTT contract is removed from the owner's records
+    event Removed(address owner, address ntt);
+
     /// @notice Add a NTT contract address to the caller's record
     /// @param ntt Address of the NTT contract to add
     function add(address ntt) external;

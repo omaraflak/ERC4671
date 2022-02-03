@@ -19,16 +19,22 @@ contract NTTStore is INTTStore, ERC165 {
         address[] storage contracts = _records[msg.sender];
         _indices[msg.sender][ntt] = contracts.length;
         contracts.push(ntt);
+        emit Added(msg.sender, ntt);
     }
 
     /// @notice Remove a NTT contract from the caller's record
     /// @param ntt Address of the NTT contract to remove
     function remove(address ntt) public virtual override {
-        uint256 index = _indexOfNTT(msg.sender, ntt);
-        require(index >= 0, "Address not found");
+        uint256 index = _indexOfNTTOrRevert(msg.sender, ntt);
         address[] storage contracts = _records[msg.sender];
+        if (index == contracts.length - 1) {
+            _indices[msg.sender][ntt] = 0;
+        } else {
+            _indices[msg.sender][contracts[contracts.length - 1]] = index;
+        }
         contracts[index] = contracts[contracts.length - 1];
         contracts.pop();
+        emit Removed(msg.sender, ntt);
     }
 
     /// @notice Get all the NTT contracts for a given owner
@@ -43,7 +49,9 @@ contract NTTStore is INTTStore, ERC165 {
             super.supportsInterface(interfaceId);
     }
 
-    function _indexOfNTT(address owner, address ntt) private view returns (uint256) {
-        return _indices[owner][ntt];
+    function _indexOfNTTOrRevert(address owner, address ntt) private view returns (uint256) {
+        uint256 index = _indices[owner][ntt];
+        require(index > 0 || _records[owner].length > 0, "Address not found");
+        return index;
     }
 }

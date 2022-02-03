@@ -48,6 +48,7 @@ A single NTT contract, is seen as representing one type of badge by one authorit
 
 * An address might possess multiple tokens. Each token has a unique identifier: `tokenId`.
 * An authority who delivers a certificate should be in position to invalidate it. Think of driving licences or weddings. However, it cannot delete your token.
+* The most typical usage for third-parties will be to verify if a user has a valid token in a NTT contract.
 
 <!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/INTT.sol) -->
 <!-- The below code snippet is automatically added from ./contracts/INTT.sol -->
@@ -100,6 +101,12 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 
 interface INTTStore is IERC165 {
+    // Event emitted when a NTT contract is added to the owner's records
+    event Added(address owner, address ntt);
+
+    // Event emitted when a NTT contract is removed from the owner's records
+    event Removed(address owner, address ntt);
+
     /// @notice Add a NTT contract address to the caller's record
     /// @param ntt Address of the NTT contract to add
     function add(address ntt) external;
