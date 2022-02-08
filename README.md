@@ -250,6 +250,12 @@ You can find implementations of the NTT standard at the following links.
 
 * [https://github.com/OmarAflak/Non-Tradable-Token/tree/master/contracts](https://github.com/OmarAflak/Non-Tradable-Token/tree/master/contracts)
 
+# Security Considerations
+
+One security aspect is related to the `tokenURI` method which returns the metadata linked to a token. Since the standard represents inherently personal possessions, users might want to encrypt the data in some cases e.g. national id cards. Moreover, it is the responsability of the contract creator to make sure the URI returned by this method is available at all time.
+
+The standard does not define any way to transfer a token from one wallet to another. Therefore, users must be very cautious with the wallet they use to receive these tokens. If a wallet is lost, the only way to get the tokens back is for the issuing authority to deliver the tokens again, akin real life.
+
 # Copyright
 
 Copyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
