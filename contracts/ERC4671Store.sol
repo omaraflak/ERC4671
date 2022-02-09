@@ -14,27 +14,27 @@ contract ERC4671Store is IERC4671Store, ERC165 {
     mapping(address => mapping(address => uint256)) _indices;
 
     /// @notice Add a ERC4671 contract address to the caller's record
-    /// @param _contract Address of the ERC4671 contract to add
-    function add(address _contract) public virtual override {
+    /// @param badge Address of the ERC4671 contract to add
+    function add(address badge) public virtual override {
         address[] storage contracts = _records[msg.sender];
-        _indices[msg.sender][_contract] = contracts.length;
-        contracts.push(_contract);
-        emit Added(msg.sender, _contract);
+        _indices[msg.sender][badge] = contracts.length;
+        contracts.push(badge);
+        emit Added(msg.sender, badge);
     }
 
     /// @notice Remove a ERC4671 contract from the caller's record
-    /// @param _contract Address of the ERC4671 contract to remove
-    function remove(address _contract) public virtual override {
-        uint256 index = _indexOfTokenOrRevert(msg.sender, _contract);
+    /// @param badge Address of the ERC4671 contract to remove
+    function remove(address badge) public virtual override {
+        uint256 index = _indexOfBadgeOrRevert(msg.sender, badge);
         address[] storage contracts = _records[msg.sender];
         if (index == contracts.length - 1) {
-            _indices[msg.sender][_contract] = 0;
+            _indices[msg.sender][badge] = 0;
         } else {
             _indices[msg.sender][contracts[contracts.length - 1]] = index;
         }
         contracts[index] = contracts[contracts.length - 1];
         contracts.pop();
-        emit Removed(msg.sender, _contract);
+        emit Removed(msg.sender, badge);
     }
 
     /// @notice Get all the ERC4671 contracts for a given owner
@@ -49,8 +49,8 @@ contract ERC4671Store is IERC4671Store, ERC165 {
             super.supportsInterface(interfaceId);
     }
 
-    function _indexOfTokenOrRevert(address owner, address _contract) private view returns (uint256) {
-        uint256 index = _indices[owner][_contract];
+    function _indexOfBadgeOrRevert(address owner, address badge) private view returns (uint256) {
+        uint256 index = _indices[owner][badge];
         require(index > 0 || _records[owner].length > 0, "Address not found");
         return index;
     }

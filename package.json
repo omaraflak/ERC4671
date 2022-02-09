@@ -1,7 +1,7 @@
 {
   "name": "ntt",
   "version": "1.0.0",
-  "description": "Non-Tradable Token Standard",
+  "description": "Badge Standard",
   "scripts": {
     "docs": "md-magic --path '*.md' --ignore 'node_modules'",
     "build": "node_modules/typescript/bin/tsc scripts/*.ts --outDir bin",

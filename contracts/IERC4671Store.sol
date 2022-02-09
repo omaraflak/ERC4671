@@ -6,18 +6,18 @@ import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 
 interface IERC4671Store is IERC165 {
     // Event emitted when a ERC4671 contract is added to the owner's records
-    event Added(address owner, address _contract);
+    event Added(address owner, address badge);
 
     // Event emitted when a ERC4671 contract is removed from the owner's records
-    event Removed(address owner, address _contract);
+    event Removed(address owner, address badge);
 
     /// @notice Add a ERC4671 contract address to the caller's record
-    /// @param _contract Address of the ERC4671 contract to add
-    function add(address _contract) external;
+    /// @param badge Address of the ERC4671 contract to add
+    function add(address badge) external;
 
     /// @notice Remove a ERC4671 contract from the caller's record
-    /// @param _contract Address of the ERC4671 contract to remove
-    function remove(address _contract) external;
+    /// @param badge Address of the ERC4671 contract to remove
+    function remove(address badge) external;
 
     /// @notice Get all the ERC4671 contracts for a given owner
     /// @param owner Address for which to retrieve the ERC4671 contracts
