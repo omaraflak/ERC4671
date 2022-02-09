@@ -7,14 +7,14 @@ import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 import "./IERC4671Store.sol";
 
 contract ERC4671Store is IERC4671Store, ERC165 {
-    // Mapping from owner to ERC4671 contracts
+    // Mapping from owner to IERC4671Enumerable contracts
     mapping(address => address[]) private _records;
 
-    // Mapping from owner to ERC4671 contract index
+    // Mapping from owner to IERC4671Enumerable contract index
     mapping(address => mapping(address => uint256)) _indices;
 
-    /// @notice Add a ERC4671 contract address to the caller's record
-    /// @param badge Address of the ERC4671 contract to add
+    /// @notice Add a IERC4671Enumerable contract address to the caller's record
+    /// @param badge Address of the IERC4671Enumerable contract to add
     function add(address badge) public virtual override {
         address[] storage contracts = _records[msg.sender];
         _indices[msg.sender][badge] = contracts.length;
@@ -22,8 +22,8 @@ contract ERC4671Store is IERC4671Store, ERC165 {
         emit Added(msg.sender, badge);
     }
 
-    /// @notice Remove a ERC4671 contract from the caller's record
-    /// @param badge Address of the ERC4671 contract to remove
+    /// @notice Remove a IERC4671Enumerable contract from the caller's record
+    /// @param badge Address of the IERC4671Enumerable contract to remove
     function remove(address badge) public virtual override {
         uint256 index = _indexOfBadgeOrRevert(msg.sender, badge);
         address[] storage contracts = _records[msg.sender];
@@ -37,8 +37,8 @@ contract ERC4671Store is IERC4671Store, ERC165 {
         emit Removed(msg.sender, badge);
     }
 
-    /// @notice Get all the ERC4671 contracts for a given owner
-    /// @param owner Address for which to retrieve the ERC4671 contracts
+    /// @notice Get all the IERC4671Enumerable contracts for a given owner
+    /// @param owner Address for which to retrieve the IERC4671Enumerable contracts
     function get(address owner) public view virtual override returns (address[] memory) {
         return _records[owner];
     }
