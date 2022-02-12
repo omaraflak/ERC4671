@@ -13,11 +13,11 @@ requires: 165
 
 ## Abstract
 
-Badges represent inherently personal possessions (material or immaterial), such as university diploma, online training certificates, government issued documents (national id, driving license, visa, wedding, etc.), labels, and so on.
+Badges represent inherently personal possessions (material or immaterial), such as university diplomas, online training certificates, government issued documents (national id, driving license, visa, wedding, etc.), labels, and so on.
 
 Badges are not made to be traded or transferred, they are "soulbound". Badges don't have monetary value. They are personally delivered to **you**, and they only serve as a **proof of possession**.
 
-Since badges are not tradable, the possession of a badge carries meaning in itself.
+Since badges are not tradable, the possession of a badge carries meaning in itself depending on **why** it was delivered..
 
 ## Motivation
 
@@ -248,9 +248,32 @@ A decision was made to keep the data off-chain (via `badgeURI()`) for two main r
 
 ## Reference Implementation
 
-You can find implementations of the badge standard at the following links.
+You can find an implementation of this standard in [../assets/eip-4671](https://github.com/ethereum/EIPs/tree/master/assets/eip-4671).
 
-* [https://github.com/OmarAflak/ERC4671/tree/master/contracts](https://github.com/OmarAflak/ERC4671/tree/master/contracts)
+Using this implementation, this is how you would create a badge:
+
+```solidity
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.0;
+
+import "./ERC4671.sol";
+
+contract EIPCreatorBadge is ERC4671 {
+    constructor() ERC4671("EIP Creator Badge", "EIP") {}
+
+    function giveThatManABadge(address owner) external {
+        require(_isCreator(), "You must be the contract creator");
+        _mint(owner);
+    }
+
+    function _baseURI() internal pure override returns (string memory) {
+        return "https://eips.ethereum.org/ntt/";
+    }
+}
+```
+
+This could be a contract managed by the Ethereum foundation and which allows them to deliver badges to EIP creators.
 
 ## Security Considerations
 
