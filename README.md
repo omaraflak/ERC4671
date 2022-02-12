@@ -15,7 +15,7 @@ requires: 165
 
 Badges represent inherently personal possessions (material or immaterial), such as university diploma, online training certificates, government issued documents (national id, driving license, visa, wedding, etc.), labels, and so on.
 
-Badges are not made to be traded or transfered, they are "soulbound". Badges don't have monetary value. They are personally delivered to **you**, and they only serve as a **proof of possession**.
+Badges are not made to be traded or transferred, they are "soulbound". Badges don't have monetary value. They are personally delivered to **you**, and they only serve as a **proof of possession**.
 
 Since badges are not tradable, the possession of a badge carries meaning in itself.
 
@@ -254,7 +254,7 @@ You can find implementations of the badge standard at the following links.
 
 ## Security Considerations
 
-One security aspect is related to the `badgeURI` method which returns the metadata linked to a badge. Since the standard represents inherently personal possessions, users might want to encrypt the data in some cases e.g. national id cards. Moreover, it is the responsability of the contract creator to make sure the URI returned by this method is available at all time.
+One security aspect is related to the `badgeURI` method which returns the metadata linked to a badge. Since the standard represents inherently personal possessions, users might want to encrypt the data in some cases e.g. national id cards. Moreover, it is the responsibility of the contract creator to make sure the URI returned by this method is available at all time.
 
 The standard does not define any way to transfer a badge from one wallet to another. Therefore, users must be very cautious with the wallet they use to receive these badges. If a wallet is lost, the only way to get the badges back is for the issuing authority to deliver the badges again, akin real life.
 
