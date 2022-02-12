@@ -21,9 +21,9 @@ Since badges are not tradable, the possession of a badge carries meaning in itse
 
 ## Motivation
 
-We have seen in the past smart contracts being used to deliver university diploma or driving licenses, for food labeling or attendance to events, and much more. All of these implementations are different, but they have a common ground: they are **non-tradable**.
+We have seen in the past smart contracts being used to deliver university diplomas or driving licenses, for food labeling or attendance to events, and much more. All of these implementations are different, but they have a common ground: they are **non-tradable**.
 
-Blockchain has been used for too long as a mean of speculation, and the badge standard wants to be part of the general effort aiming to provide usefulness through the blockchain.
+Blockchain has been used for too long as a means of speculation, and the badge standard wants to be part of the general effort aiming to provide usefulness through the blockchain.
 
 By providing a common interface for badges, we allow more applications to be developed and we position blockchain technology as a standard gateway for verification of personal possessions.
 
@@ -205,7 +205,7 @@ interface IERC4671Consensus is IERC4671 {
 
 ### Badge Store
 
-Badges are meant to be fetched by third-parties, which is why there need to be a convienent way for users to expose some or all of their badges. We achieve this result using a store which must implement the following interface.
+Badges are meant to be fetched by third-parties, which is why there needs to be a convenient way for users to expose some or all of their badges. We achieve this result using a store which must implement the following interface.
 
 <!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/IERC4671Store.sol) -->
 <!-- The below code snippet is automatically added from ./contracts/IERC4671Store.sol -->
@@ -254,7 +254,7 @@ You can find implementations of the badge standard at the following links.
 
 ## Security Considerations
 
-One security aspect is related to the `badgeURI` method which returns the metadata linked to a badge. Since the standard represents inherently personal possessions, users might want to encrypt the data in some cases e.g. national id cards. Moreover, it is the responsibility of the contract creator to make sure the URI returned by this method is available at all time.
+One security aspect is related to the `badgeURI` method which returns the metadata linked to a badge. Since the standard represents inherently personal possessions, users might want to encrypt the data in some cases e.g. national id cards. Moreover, it is the responsibility of the contract creator to make sure the URI returned by this method is available at all times.
 
 The standard does not define any way to transfer a badge from one wallet to another. Therefore, users must be very cautious with the wallet they use to receive these badges. If a wallet is lost, the only way to get the badges back is for the issuing authority to deliver the badges again, akin real life.
 
