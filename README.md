@@ -203,6 +203,33 @@ interface IERC4671Consensus is IERC4671 {
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
 
+##### Pull
+
+An interface allowing a token owner to pull his token to another of his wallets. The caller must provide a signature of the tuple (tokenId, owner, recipient).
+
+<!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/IERC4671Pull.sol) -->
+<!-- The below code snippet is automatically added from ./contracts/IERC4671Pull.sol -->
+```solidity
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.0;
+
+import "./IERC4671.sol";
+
+interface IERC4671Pull is IERC4671 {
+    // Event emitted when a IERC4671 token is transfered from owner to recipient
+    event Pulled(address owner, address recipient);
+
+    /// @notice Pull a token from an owned wallet to the caller's wallet 
+    /// @param tokenId Identifier of the token to transfer
+    /// @param owner Address that owns tokenId
+    /// @param signature Signed data (tokenId, owner, recipient) by the owner of the token
+    function pull(uint256 tokenId, address owner, bytes memory signature) external;
+}
+```
+<!-- The below code snippet is automatically added from ./contracts/IERC4671Pull.sol -->
+<!-- AUTO-GENERATED-CONTENT:END -->
+
 ### NTT Store
 
 Non-tradable tokens are meant to be fetched by third-parties, which is why there needs to be a convenient way for users to expose some or all of their tokens. We achieve this result using a store which must implement the following interface.
