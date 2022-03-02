@@ -1,7 +1,7 @@
 ---
 eip: 4671
-title: Badge Standard
-description: A standard interface for badges.
+title: Non-Tradable Tokens Standard
+description: A standard interface for non-tradable tokens, aka badges.
 author: Omar Aflak (@omaraflak), Pol-Malo Le Bris, Marvin Martin (@MarvinMartin24)
 discussions-to: https://ethereum-magicians.org/t/eip-4671-non-tradable-token/7976
 status: Draft
@@ -13,29 +13,29 @@ requires: 165
 
 ## Abstract
 
-Badges represent inherently personal possessions (material or immaterial), such as university diplomas, online training certificates, government issued documents (national id, driving license, visa, wedding, etc.), labels, and so on.
+A non-tradable token, or NTT, represent inherently personal possessions (material or immaterial), such as university diplomas, online training certificates, government issued documents (national id, driving license, visa, wedding, etc.), labels, and so on.
 
-Badges are not made to be traded or transferred, they are "soulbound". Badges don't have monetary value. They are personally delivered to **you**, and they only serve as a **proof of possession**.
+Non-tradable tokens are not made to be traded or transferred, they are "soulbound". Non-tradable tokens don't have monetary value. They are personally delivered to **you**, and they only serve as a **proof of possession**.
 
-Since badges are not tradable, the possession of a badge carries meaning in itself depending on **why** it was delivered..
+Since these tokens are not tradable, the possession of a N carries meaning in itself depending on **why** it was delivered.
 
 ## Motivation
 
 We have seen in the past smart contracts being used to deliver university diplomas or driving licenses, for food labeling or attendance to events, and much more. All of these implementations are different, but they have a common ground: they are **non-tradable**.
 
-Blockchain has been used for too long as a means of speculation, and the badge standard wants to be part of the general effort aiming to provide usefulness through the blockchain.
+Blockchain has been used for too long as a means of speculation, and non-tradable tokens wants to be part of the general effort aiming to provide usefulness through the blockchain.
 
-By providing a common interface for badges, we allow more applications to be developed and we position blockchain technology as a standard gateway for verification of personal possessions.
+By providing a common interface for non-tradable tokens, we allow more applications to be developed and we position blockchain technology as a standard gateway for verification of personal possessions.
 
 ## Specification
 
-### Badge
+### Non-Tradable Token
 
-A badge contract is seen as representing one type of certificate by one authority. For instance, one badge contract for the French national id, another for Ethereum EIP creators, and so on...
+A NTT contract is seen as representing one type of certificate by one authority. For instance, one NTT contract for the French National Id, another for Ethereum EIP creators, and so on...
 
-* An address might possess multiple badges. Each badge has a unique identifier: `badgeId`.
-* An authority who delivers a certificate should be in position to invalidate it. Think of driving licenses or weddings. However, it cannot delete your badge, i.e. the record will show that you once owned a badge.
-* The most typical usage for third-parties will be to verify if a user has a valid badge in a given contract.
+* An address might possess multiple tokens. Each token has a unique identifier: `tokenId`.
+* An authority who delivers a certificate should be in position to invalidate it. Think of driving licenses or weddings. However, it cannot delete your token, i.e. the record will show that you once owned a token from that contract.
+* The most typical usage for third-parties will be to verify if a user has a valid token in a given contract.
 
 <!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/IERC4671.sol) -->
 <!-- The below code snippet is automatically added from ./contracts/IERC4671.sol -->
@@ -80,7 +80,7 @@ interface IERC4671 is IERC165 {
 
 ##### Metadata
 
-An interface allowing to add metadata linked to each badge, as in ERC721.
+An interface allowing to add metadata linked to each token, as in ERC721.
 
 <!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/IERC4671Metadata.sol) -->
 <!-- The below code snippet is automatically added from ./contracts/IERC4671Metadata.sol -->
@@ -108,7 +108,7 @@ interface IERC4671Metadata is IERC4671 {
 
 ##### Enumerable
 
-An interface allowing to enumerate the badges of an owner, as in ERC721.
+An interface allowing to enumerate the tokens of an owner, as in ERC721.
 
 <!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/IERC4671enumerable.sol) -->
 <!-- The below code snippet is automatically added from ./contracts/IERC4671enumerable.sol -->
@@ -134,7 +134,7 @@ interface IERC4671Enumerable is IERC4671 {
 
 ##### Delegation
 
-An interface allowing delegation rights of badge minting.
+An interface allowing delegation rights of token minting.
 
 <!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/IERC4671Delegate.sol) -->
 <!-- The below code snippet is automatically added from ./contracts/IERC4671Delegate.sol -->
@@ -176,7 +176,7 @@ interface IERC4671Delegate is IERC4671 {
 
 ##### Consensus
 
-An interface allowing minting/invalidation of badges based on a consensus of a predefined set of addresses.
+An interface allowing minting/invalidation of tokens based on a consensus of a predefined set of addresses.
 
 <!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/IERC4671Consensus.sol) -->
 <!-- The below code snippet is automatically added from ./contracts/IERC4671Consensus.sol -->
@@ -203,9 +203,9 @@ interface IERC4671Consensus is IERC4671 {
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
 
-### Badge Store
+### NTT Store
 
-Badges are meant to be fetched by third-parties, which is why there needs to be a convenient way for users to expose some or all of their badges. We achieve this result using a store which must implement the following interface.
+Non-tradable tokens are meant to be fetched by third-parties, which is why there needs to be a convenient way for users to expose some or all of their tokens. We achieve this result using a store which must implement the following interface.
 
 <!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/IERC4671Store.sol) -->
 <!-- The below code snippet is automatically added from ./contracts/IERC4671Store.sol -->
@@ -242,15 +242,15 @@ interface IERC4671Store is IERC165 {
 
 ### On-chain vs Off-chain
 
-A decision was made to keep the data off-chain (via `badgeURI()`) for two main reasons: 
-* Badges represent personal possessions. Therefore, there might be cases where the data should be encrypted. The standard should not outline decisions about encryption because there are just so many ways this could be done, and every possibility is specific to the use-case.
-* Badges must stay generic. There could have been a possibility to make a `MetadataStore` holding the data of badges in an elegant way, unfortunately we would have needed a support for generics in solidity (or struct inheritance), which is not available today.
+A decision was made to keep the data off-chain (via `tokenURI()`) for two main reasons: 
+* Non-tradable tokens represent personal possessions. Therefore, there might be cases where the data should be encrypted. The standard should not outline decisions about encryption because there are just so many ways this could be done, and every possibility is specific to the use-case.
+* Non-tradable tokens must stay generic. There could have been a possibility to make a `MetadataStore` holding the data of tokens in an elegant way, unfortunately we would have needed a support for generics in solidity (or struct inheritance), which is not available today.
 
 ## Reference Implementation
 
 You can find an implementation of this standard in [../assets/eip-4671](https://github.com/ethereum/EIPs/tree/master/assets/eip-4671).
 
-Using this implementation, this is how you would create a badge:
+Using this implementation, this is how you would create a token:
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -273,13 +273,13 @@ contract EIPCreatorBadge is ERC4671 {
 }
 ```
 
-This could be a contract managed by the Ethereum foundation and which allows them to deliver badges to EIP creators.
+This could be a contract managed by the Ethereum foundation and which allows them to deliver tokens to EIP creators.
 
 ## Security Considerations
 
-One security aspect is related to the `badgeURI` method which returns the metadata linked to a badge. Since the standard represents inherently personal possessions, users might want to encrypt the data in some cases e.g. national id cards. Moreover, it is the responsibility of the contract creator to make sure the URI returned by this method is available at all times.
+One security aspect is related to the `tokenURI` method which returns the metadata linked to a token. Since the standard represents inherently personal possessions, users might want to encrypt the data in some cases e.g. national id cards. Moreover, it is the responsibility of the contract creator to make sure the URI returned by this method is available at all times.
 
-The standard does not define any way to transfer a badge from one wallet to another. Therefore, users must be very cautious with the wallet they use to receive these badges. If a wallet is lost, the only way to get the badges back is for the issuing authority to deliver the badges again, akin real life.
+The standard does not define any way to transfer a token from one wallet to another. Therefore, users must be very cautious with the wallet they use to receive these tokens. If a wallet is lost, the only way to get the tokens back is for the issuing authorities to deliver the tokens again, akin real life.
 
 ## Copyright
 
