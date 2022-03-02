@@ -47,30 +47,30 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 
 interface IERC4671 is IERC165 {
-    /// Event emitted when a badge `badgeId` is minted for `owner`
-    event Minted(address owner, uint256 badgeId);
+    /// Event emitted when a token `tokenId` is minted for `owner`
+    event Minted(address owner, uint256 tokenId);
 
-    /// Event emitted when badge `badgeId` of `owner` is invalidated
-    event Invalidated(address owner, uint256 badgeId);
+    /// Event emitted when token `tokenId` of `owner` is invalidated
+    event Invalidated(address owner, uint256 tokenId);
 
-    /// @notice Count all badges assigned to an owner
+    /// @notice Count all tokens assigned to an owner
     /// @param owner Address for whom to query the balance
-    /// @return Number of badges owned by `owner`
+    /// @return Number of tokens owned by `owner`
     function balanceOf(address owner) external view returns (uint256);
 
-    /// @notice Get owner of a badge
-    /// @param badgeId Identifier of the badge
-    /// @return Address of the owner of `badgeId`
-    function ownerOf(uint256 badgeId) external view returns (address);
+    /// @notice Get owner of a token
+    /// @param tokenId Identifier of the token
+    /// @return Address of the owner of `tokenId`
+    function ownerOf(uint256 tokenId) external view returns (address);
 
-    /// @notice Check if a badge hasn't been invalidated
-    /// @param badgeId Identifier of the badge
-    /// @return True if the badge is valid, false otherwise
-    function isValid(uint256 badgeId) external view returns (bool);
+    /// @notice Check if a token hasn't been invalidated
+    /// @param tokenId Identifier of the token
+    /// @return True if the token is valid, false otherwise
+    function isValid(uint256 tokenId) external view returns (bool);
 
-    /// @notice Check if an address owns a valid badge in the contract
+    /// @notice Check if an address owns a valid token in the contract
     /// @param owner Address for whom to check the ownership
-    /// @return True if `owner` has a valid badge, false otherwise
+    /// @return True if `owner` has a valid token, false otherwise
     function hasValid(address owner) external view returns (bool);
 }
 ```
@@ -92,16 +92,16 @@ pragma solidity ^0.8.0;
 import "./IERC4671.sol";
 
 interface IERC4671Metadata is IERC4671 {
-    /// @return Descriptive name of the badges in this contract
+    /// @return Descriptive name of the tokens in this contract
     function name() external view returns (string memory);
 
-    /// @return An abbreviated name of the badges in this contract
+    /// @return An abbreviated name of the tokens in this contract
     function symbol() external view returns (string memory);
 
-    /// @notice URI to query to get the badge's metadata
-    /// @param badgeId Identifier of the badge
-    /// @return URI for the badge
-    function badgeURI(uint256 badgeId) external view returns (string memory);
+    /// @notice URI to query to get the token's metadata
+    /// @param tokenId Identifier of the token
+    /// @return URI for the token
+    function tokenURI(uint256 tokenId) external view returns (string memory);
 }
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
@@ -120,14 +120,14 @@ pragma solidity ^0.8.0;
 import "./IERC4671.sol";
 
 interface IERC4671Enumerable is IERC4671 {
-    /// @return Total number of badges emitted by the contract
+    /// @return Total number of tokens emitted by the contract
     function total() external view returns (uint256);
 
-    /// @notice Get the badgeId of a badge using its position in the owner's list
-    /// @param owner Address for whom to get the badge
-    /// @param index Index of the badge
-    /// @return badgeId of the badge
-    function badgeOfOwnerByIndex(address owner, uint256 index) external view returns (uint256);
+    /// @notice Get the tokenId of a token using its position in the owner's list
+    /// @param owner Address for whom to get the token
+    /// @param index Index of the token
+    /// @return tokenId of the token
+    function tokenOfOwnerByIndex(address owner, uint256 index) external view returns (uint256);
 }
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
@@ -148,28 +148,28 @@ import "./IERC4671.sol";
 interface IERC4671Delegate is IERC4671 {
     /// @notice Grant one-time minting right to `operator` for `owner`
     /// An allowed operator can call the function to transfer rights.
-    /// @param operator Address allowed to mint a badge
-    /// @param owner Address for whom `operator` is allowed to mint a badge
+    /// @param operator Address allowed to mint a token
+    /// @param owner Address for whom `operator` is allowed to mint a token
     function delegate(address operator, address owner) external;
 
     /// @notice Grant one-time minting right to a list of `operators` for a corresponding list of `owners`
     /// An allowed operator can call the function to transfer rights.
     /// @param operators Addresses allowed to mint
-    /// @param owners Addresses for whom `operators` are allowed to mint a badge
+    /// @param owners Addresses for whom `operators` are allowed to mint a token
     function delegateBatch(address[] memory operators, address[] memory owners) external;
 
-    /// @notice Mint a badge. Caller must have the right to mint for the owner.
-    /// @param owner Address for whom the badge is minted
+    /// @notice Mint a token. Caller must have the right to mint for the owner.
+    /// @param owner Address for whom the token is minted
     function mint(address owner) external;
 
-    /// @notice Mint badges to multiple addresses. Caller must have the right to mint for all owners.
-    /// @param owners Addresses for whom the badges are minted
+    /// @notice Mint tokens to multiple addresses. Caller must have the right to mint for all owners.
+    /// @param owners Addresses for whom the tokens are minted
     function mintBatch(address[] memory owners) external;
 
-    /// @notice Get the issuer of a badge
-    /// @param badgeId Identifier of the badge
-    /// @return Address who minted `badgeId`
-    function issuerOf(uint256 badgeId) external view returns (address);
+    /// @notice Get the issuer of a token
+    /// @param tokenId Identifier of the token
+    /// @return Address who minted `tokenId`
+    function issuerOf(uint256 tokenId) external view returns (address);
 }
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
@@ -192,13 +192,13 @@ interface IERC4671Consensus is IERC4671 {
     /// @return Addresses of the voters
     function voters() external view returns (address[] memory);
 
-    /// @notice Cast a vote to mint a badge for a specific address
-    /// @param owner Address for whom to mint the badge
+    /// @notice Cast a vote to mint a token for a specific address
+    /// @param owner Address for whom to mint the token
     function approveMint(address owner) external;
 
-    /// @notice Cast a vote to invalidate a specific badge
-    /// @param badgeId Identifier of the badge to invalidate
-    function approveInvalidate(uint256 badgeId) external;
+    /// @notice Cast a vote to invalidate a specific token
+    /// @param tokenId Identifier of the token to invalidate
+    function approveInvalidate(uint256 tokenId) external;
 }
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
@@ -218,18 +218,18 @@ import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 
 interface IERC4671Store is IERC165 {
     // Event emitted when a IERC4671Enumerable contract is added to the owner's records
-    event Added(address owner, address badge);
+    event Added(address owner, address token);
 
     // Event emitted when a IERC4671Enumerable contract is removed from the owner's records
-    event Removed(address owner, address badge);
+    event Removed(address owner, address token);
 
     /// @notice Add a IERC4671Enumerable contract address to the caller's record
-    /// @param badge Address of the IERC4671Enumerable contract to add
-    function add(address badge) external;
+    /// @param token Address of the IERC4671Enumerable contract to add
+    function add(address token) external;
 
     /// @notice Remove a IERC4671Enumerable contract from the caller's record
-    /// @param badge Address of the IERC4671Enumerable contract to remove
-    function remove(address badge) external;
+    /// @param token Address of the IERC4671Enumerable contract to remove
+    function remove(address token) external;
 
     /// @notice Get all the IERC4671Enumerable contracts for a given owner
     /// @param owner Address for which to retrieve the IERC4671Enumerable contracts
