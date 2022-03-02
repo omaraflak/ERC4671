@@ -11,7 +11,7 @@ import "./IERC4671Pull.sol";
 abstract contract ERC4671SelfTransferable is ERC4671, IERC4671Pull {
     using ECDSA for bytes32;
 
-    /// @notice Pull a token from an owned wallet to the caller's wallet 
+    /// @notice Pull a token from the owner wallet to the caller's wallet
     /// @param tokenId Identifier of the token to transfer
     /// @param owner Address that owns tokenId
     /// @param signature Signed data (tokenId, owner, recipient) by the owner of the token

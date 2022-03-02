@@ -205,7 +205,7 @@ interface IERC4671Consensus is IERC4671 {
 
 ##### Pull
 
-An interface allowing a token owner to pull his token to another of his wallets. The caller must provide a signature of the tuple (tokenId, owner, recipient).
+An interface allowing a token owner to pull his token to a another of his wallets (here `recipient`). The caller must provide a signature of the tuple `(tokenId, owner, recipient)` using the `owner` wallet.
 
 <!-- AUTO-GENERATED-CONTENT:START (CODE:syntax=solidity&src=./contracts/IERC4671Pull.sol) -->
 <!-- The below code snippet is automatically added from ./contracts/IERC4671Pull.sol -->
@@ -220,7 +220,7 @@ interface IERC4671Pull is IERC4671 {
     // Event emitted when a IERC4671 token is transfered from owner to recipient
     event Pulled(address owner, address recipient);
 
-    /// @notice Pull a token from an owned wallet to the caller's wallet 
+    /// @notice Pull a token from the owner wallet to the caller's wallet
     /// @param tokenId Identifier of the token to transfer
     /// @param owner Address that owns tokenId
     /// @param signature Signed data (tokenId, owner, recipient) by the owner of the token
