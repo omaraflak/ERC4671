@@ -1,7 +1,7 @@
 import { getContract, wallet } from "./utils"
 
 const addresses = [
-    "0x2260fA705e6a1Ad309a3bF38eb451FF3654A1B76"
+    "0x4200c7ee62aebd20599235f615e1524F293640Bf"
 ]
 
 addresses.forEach((address: string) => {
