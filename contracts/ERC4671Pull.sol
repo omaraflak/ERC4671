@@ -24,8 +24,9 @@ abstract contract ERC4671Pull is ERC4671, IERC4671Pull {
         bytes32 signedHash = messageHash.toEthSignedMessageHash();
         require(signedHash.recover(signature) == owner, "Invalid signature");
 
-        _removeToken(owner, tokenId);
-        _mintUnsafe(recipient, tokenId);
+        bool valid = token.valid;
+        _removeToken(tokenId);
+        _mintUnsafe(recipient, tokenId, valid);
     }
 
     function supportsInterface(bytes4 interfaceId) public view virtual override(IERC165, ERC4671) returns (bool) {
