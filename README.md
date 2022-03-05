@@ -10,9 +10,9 @@ category: ERC
 created: 2022-01-13
 requires: 165
 ---
- 
+
 ## Abstract
- 
+
 A non-tradable token, or NTT, represents inherently personal possessions (material or immaterial), such as university diplomas, online training certificates, government issued documents (national id, driving license, visa, wedding, etc.), labels, and so on.
 
 As the name implies, non-tradable tokens are not made to be traded or transferred, they are "soulbound". They don't have monetary value, they are personally delivered to **you**, and they only serve as a **proof of possession/achievement**.
