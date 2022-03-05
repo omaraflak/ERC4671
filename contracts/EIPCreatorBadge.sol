@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import "./ERC4671.sol";
+import "./ERC4671Pull.sol";
 
-contract EIPCreatorBadge is ERC4671 {
+contract EIPCreatorBadge is ERC4671Pull {
     constructor() ERC4671("EIP Creator Badge", "EIP") {}
 
     function giveThatManABadge(address owner) external {

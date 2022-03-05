@@ -24,26 +24,8 @@ abstract contract ERC4671Pull is ERC4671, IERC4671Pull {
         bytes32 signedHash = messageHash.toEthSignedMessageHash();
         require(signedHash.recover(signature) == owner, "Invalid signature");
 
-        token.owner = recipient;
-        if (token.valid) {
-            _numberOfValidTokens[owner] -= 1;
-            _numberOfValidTokens[recipient] += 1;
-        }
-
-        uint256[] storage tokenIds = _indexedTokenIds[owner];
-        for (uint256 i=0; i<tokenIds.length; i++) {
-            if (tokenIds[i] == tokenId) {
-                if (i != tokenIds.length - 1) {
-                    tokenIds[i] = tokenIds[tokenIds.length - 1];
-                }
-                tokenIds.pop();
-                _indexedTokenIds[recipient].push(tokenId);
-                emit Pulled(owner, recipient);
-                return;
-            }
-        }
-
-        revert();
+        _removeToken(owner, tokenId);
+        _mintUnsafe(recipient, tokenId);
     }
 
     function supportsInterface(bytes4 interfaceId) public view virtual override(IERC165, ERC4671) returns (bool) {
