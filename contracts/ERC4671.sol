@@ -154,6 +154,7 @@ abstract contract ERC4671 is IERC4671, IERC4671Metadata, IERC4671Enumerable, ERC
     /// @param owner Address for whom to assign the token
     /// @param tokenId Token identifier to assign to the owner 
     function _mintUnsafe(address owner, uint256 tokenId) internal {
+        require(_tokens[tokenId].owner == address(0), "Cannot mint an assigned token");
         _tokens[tokenId] = Token(msg.sender, owner, true);
         _tokenIdIndex[owner][tokenId] = _indexedTokenIds[owner].length;
         _indexedTokenIds[owner].push(tokenId);
@@ -175,8 +176,11 @@ abstract contract ERC4671 is IERC4671, IERC4671Metadata, IERC4671Enumerable, ERC
     }
 
     /// @notice Remove a token
+    /// @param owner Address for which to remove the token
+    /// @param tokenId Token identifier to remove
     function _removeToken(address owner, uint256 tokenId) internal virtual {
         Token storage token = _getTokenOrRevert(tokenId);
+        require(token.owner == owner, "Token does not belong to provided owner");
         delete _tokens[tokenId];
         _removeFromUnorderedArray(_indexedTokenIds[owner], _tokenIdIndex[owner][tokenId]);
         delete _tokenIdIndex[owner][tokenId];
@@ -186,6 +190,9 @@ abstract contract ERC4671 is IERC4671, IERC4671Metadata, IERC4671Enumerable, ERC
         }
     }
 
+    /// @notice Removes an entry in an array by its index
+    /// @param array Array for which to remove the entry
+    /// @param index Index of the entry to remove
     function _removeFromUnorderedArray(uint256[] storage array, uint256 index) internal {
         require(index < array.length, "Trying to delete out of bound index");
         if (index != array.length - 1) {
