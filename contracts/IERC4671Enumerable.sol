@@ -5,8 +5,14 @@ pragma solidity ^0.8.0;
 import "./IERC4671.sol";
 
 interface IERC4671Enumerable is IERC4671 {
-    /// @return Total number of tokens emitted
-    function total() external view returns (uint256);
+    /// @return emittedCount Number of tokens emitted
+    function emittedCount() external view returns (uint256);
+
+    /// @return holdersCount Number of token holders  
+    function holdersCount() external view returns (uint256);
+
+    /// @return holders Addresses of token holders
+    function holders() external view returns (address[] memory);
 
     /// @notice Get the tokenId of a token using its position in the owner's list
     /// @param owner Address for whom to get the token

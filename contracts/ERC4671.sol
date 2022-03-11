@@ -29,6 +29,9 @@ abstract contract ERC4671 is IERC4671, IERC4671Metadata, IERC4671Enumerable, ERC
     // Mapping from owner to number of valid tokens
     mapping(address => uint256) private _numberOfValidTokens;
 
+    // Token holders addresses
+    address[] private _holders;
+
     // Token name
     string private _name;
 
@@ -36,7 +39,7 @@ abstract contract ERC4671 is IERC4671, IERC4671Metadata, IERC4671Enumerable, ERC
     string private _symbol;
 
     // Total number of tokens emitted
-    uint256 private _total;
+    uint256 private _emittedCount;
 
     // Contract creator
     address private _creator;
@@ -100,9 +103,19 @@ abstract contract ERC4671 is IERC4671, IERC4671Metadata, IERC4671Enumerable, ERC
         return "";
     }
 
-    /// @return Total number of tokens emitted
-    function total() public view override returns (uint256) {
-        return _total;
+    /// @return emittedCount Number of tokens emitted
+    function emittedCount() public view override returns (uint256) {
+        return _emittedCount;
+    }
+
+    /// @return holdersCount Number of token holders  
+    function holdersCount() public view override returns (uint256) {
+        return _holders.length;
+    }
+
+    /// @return holders Addresses of token holders
+    function holders() public view override returns (address[] memory) {
+        return _holders;
     }
 
     /// @notice Get the tokenId of a token using its position in the owner's list
@@ -151,10 +164,13 @@ abstract contract ERC4671 is IERC4671, IERC4671Metadata, IERC4671Enumerable, ERC
     /// @param owner Address for whom to assign the token
     /// @return tokenId Identifier of the minted token
     function _mint(address owner) internal virtual returns (uint256 tokenId) {
-        tokenId = _total;
+        if (_indexedTokenIds[owner].length == 0) {
+            _holders.push(owner);
+        }
+        tokenId = _emittedCount;
         _mintUnsafe(owner, tokenId, true);
         emit Minted(owner, tokenId);
-        _total += 1;
+        _emittedCount += 1;
     }
 
     /// @notice Mint a given tokenId
