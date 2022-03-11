@@ -31,7 +31,7 @@ abstract contract ERC4671 is IERC4671, IERC4671Metadata, IERC4671Enumerable, ERC
 
     // Mapping from owner to index in _holders
     mapping(address => uint256) private _holdersIndex;
-    
+
     // Token holders addresses
     address[] private _holders;
 
