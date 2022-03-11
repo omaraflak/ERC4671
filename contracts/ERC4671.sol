@@ -29,6 +29,9 @@ abstract contract ERC4671 is IERC4671, IERC4671Metadata, IERC4671Enumerable, ERC
     // Mapping from owner to number of valid tokens
     mapping(address => uint256) private _numberOfValidTokens;
 
+    // Mapping from owner to index in _holders
+    mapping(address => uint256) private _holdersIndex;
+    
     // Token holders addresses
     address[] private _holders;
 
@@ -164,9 +167,6 @@ abstract contract ERC4671 is IERC4671, IERC4671Metadata, IERC4671Enumerable, ERC
     /// @param owner Address for whom to assign the token
     /// @return tokenId Identifier of the minted token
     function _mint(address owner) internal virtual returns (uint256 tokenId) {
-        if (_indexedTokenIds[owner].length == 0) {
-            _holders.push(owner);
-        }
         tokenId = _emittedCount;
         _mintUnsafe(owner, tokenId, true);
         emit Minted(owner, tokenId);
@@ -179,6 +179,10 @@ abstract contract ERC4671 is IERC4671, IERC4671Metadata, IERC4671Enumerable, ERC
     /// @param valid Boolean to assert of the validity of the token 
     function _mintUnsafe(address owner, uint256 tokenId, bool valid) internal {
         require(_tokens[tokenId].owner == address(0), "Cannot mint an assigned token");
+        if (_indexedTokenIds[owner].length == 0) {
+            _holdersIndex[owner] = _holders.length;
+            _holders.push(owner);
+        }
         _tokens[tokenId] = Token(msg.sender, owner, valid);
         _tokenIdIndex[owner][tokenId] = _indexedTokenIds[owner].length;
         _indexedTokenIds[owner].push(tokenId);
@@ -205,20 +209,32 @@ abstract contract ERC4671 is IERC4671, IERC4671Metadata, IERC4671Enumerable, ERC
     /// @param tokenId Token identifier to remove
     function _removeToken(uint256 tokenId) internal virtual {
         Token storage token = _getTokenOrRevert(tokenId);
-        address owner = token.owner;
-        delete _tokens[tokenId];
-        _removeFromUnorderedArray(_indexedTokenIds[owner], _tokenIdIndex[owner][tokenId]);
-        delete _tokenIdIndex[owner][tokenId];
-        if (token.valid) {
-            assert(_numberOfValidTokens[owner] > 0);
-            _numberOfValidTokens[owner] -= 1;
+        _removeFromUnorderedArray(_indexedTokenIds[token.owner], _tokenIdIndex[token.owner][tokenId]);
+        if (_indexedTokenIds[token.owner].length == 0) {
+            _removeFromUnorderedArray(_holders, _holdersIndex[token.owner]);
         }
+        if (token.valid) {
+            assert(_numberOfValidTokens[token.owner] > 0);
+            _numberOfValidTokens[token.owner] -= 1;
+        }
+        delete _tokens[tokenId];
     }
 
     /// @notice Removes an entry in an array by its index
     /// @param array Array for which to remove the entry
     /// @param index Index of the entry to remove
     function _removeFromUnorderedArray(uint256[] storage array, uint256 index) internal {
+        require(index < array.length, "Trying to delete out of bound index");
+        if (index != array.length - 1) {
+            array[index] = array[array.length - 1];
+        }
+        array.pop();
+    }
+
+    /// @notice Removes an entry in an array by its index
+    /// @param array Array for which to remove the entry
+    /// @param index Index of the entry to remove
+    function _removeFromUnorderedArray(address[] storage array, uint256 index) internal {
         require(index < array.length, "Trying to delete out of bound index");
         if (index != array.length - 1) {
             array[index] = array[array.length - 1];

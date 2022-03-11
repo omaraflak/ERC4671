@@ -1,4 +1,5 @@
-import { getContractFactory } from "./utils"
+import { utilsForWallet1 } from "./utils"
+const { getContractFactory } = utilsForWallet1
 
 const contractFactory = getContractFactory("bin/EIPCreatorBadge.abi", "bin/EIPCreatorBadge.bin")
 

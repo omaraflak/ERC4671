@@ -1,4 +1,5 @@
-import { getContract, wallet } from "./utils"
+import { utilsForWallet1 } from "./utils"
+const { wallet, getContract } = utilsForWallet1
 
 const addresses = [
     "0xdd7aa796a65e76a2e2e0462fc700c61d3d739e9c"
