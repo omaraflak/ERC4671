@@ -29,12 +29,6 @@ abstract contract ERC4671 is IERC4671, IERC4671Metadata, IERC4671Enumerable, ERC
     // Mapping from owner to number of valid tokens
     mapping(address => uint256) private _numberOfValidTokens;
 
-    // Mapping from owner to index in _holders
-    mapping(address => uint256) private _holdersIndex;
-
-    // Token holders addresses
-    address[] private _holders;
-
     // Token name
     string private _name;
 
@@ -43,6 +37,9 @@ abstract contract ERC4671 is IERC4671, IERC4671Metadata, IERC4671Enumerable, ERC
 
     // Total number of tokens emitted
     uint256 private _emittedCount;
+
+    // Total number of token holders
+    uint256 private _holdersCount;
 
     // Contract creator
     address private _creator;
@@ -113,12 +110,7 @@ abstract contract ERC4671 is IERC4671, IERC4671Metadata, IERC4671Enumerable, ERC
 
     /// @return holdersCount Number of token holders  
     function holdersCount() public view override returns (uint256) {
-        return _holders.length;
-    }
-
-    /// @return holders Addresses of token holders
-    function holders() public view override returns (address[] memory) {
-        return _holders;
+        return _holdersCount;
     }
 
     /// @notice Get the tokenId of a token using its position in the owner's list
@@ -180,8 +172,7 @@ abstract contract ERC4671 is IERC4671, IERC4671Metadata, IERC4671Enumerable, ERC
     function _mintUnsafe(address owner, uint256 tokenId, bool valid) internal {
         require(_tokens[tokenId].owner == address(0), "Cannot mint an assigned token");
         if (_indexedTokenIds[owner].length == 0) {
-            _holdersIndex[owner] = _holders.length;
-            _holders.push(owner);
+            _holdersCount += 1;
         }
         _tokens[tokenId] = Token(msg.sender, owner, valid);
         _tokenIdIndex[owner][tokenId] = _indexedTokenIds[owner].length;
@@ -211,7 +202,8 @@ abstract contract ERC4671 is IERC4671, IERC4671Metadata, IERC4671Enumerable, ERC
         Token storage token = _getTokenOrRevert(tokenId);
         _removeFromUnorderedArray(_indexedTokenIds[token.owner], _tokenIdIndex[token.owner][tokenId]);
         if (_indexedTokenIds[token.owner].length == 0) {
-            _removeFromUnorderedArray(_holders, _holdersIndex[token.owner]);
+            assert(_holdersCount > 0);
+            _holdersCount -= 1;
         }
         if (token.valid) {
             assert(_numberOfValidTokens[token.owner] > 0);
@@ -224,17 +216,6 @@ abstract contract ERC4671 is IERC4671, IERC4671Metadata, IERC4671Enumerable, ERC
     /// @param array Array for which to remove the entry
     /// @param index Index of the entry to remove
     function _removeFromUnorderedArray(uint256[] storage array, uint256 index) internal {
-        require(index < array.length, "Trying to delete out of bound index");
-        if (index != array.length - 1) {
-            array[index] = array[array.length - 1];
-        }
-        array.pop();
-    }
-
-    /// @notice Removes an entry in an array by its index
-    /// @param array Array for which to remove the entry
-    /// @param index Index of the entry to remove
-    function _removeFromUnorderedArray(address[] storage array, uint256 index) internal {
         require(index < array.length, "Trying to delete out of bound index");
         if (index != array.length - 1) {
             array[index] = array[array.length - 1];

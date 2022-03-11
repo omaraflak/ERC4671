@@ -56,12 +56,6 @@ const main = async () => {
     assertBigNumberEqual(await contract1.functions.emittedCount(), BigNumber.from(3), "emitted count")
     assertBigNumberEqual(await contract1.functions.holdersCount(), BigNumber.from(1), "holders count")
 
-    // check holders
-    const holders = await contract1.functions.holders()
-    assert.ok(holders instanceof Array)
-    assert.equal(holders.length, 1)
-    assertStringEqual(holders[0], utilsForWallet2.wallet.address, "only holder is " + utilsForWallet2.wallet.address)
-
     // check token ids
     assertBigNumberEqual(await contract1.functions.tokenOfOwnerByIndex(utilsForWallet2.wallet.address, 0), BigNumber.from(0), "index of tokenId 0");
     assertBigNumberEqual(await contract1.functions.tokenOfOwnerByIndex(utilsForWallet2.wallet.address, 1), BigNumber.from(1), "index of tokenId 1");
@@ -106,14 +100,6 @@ const main = async () => {
     assertBoolEqual(await contract1.functions.isValid(1), false, "token 1 is invalid")
     assertBoolEqual(await contract1.functions.hasValid(utilsForWallet1.wallet.address), false, utilsForWallet1.wallet.address + " has no valid tokens")
     assertBoolEqual(await contract1.functions.hasValid(utilsForWallet2.wallet.address), true, utilsForWallet2.wallet.address + " has valid tokens")
-
-    // check new holders
-    console.log("checking new holders")
-    const newHolders = (await contract1.functions.holders())[0]
-    assert.ok(newHolders instanceof Array)
-    assert.equal(newHolders.length, 2)
-    assert.equal(newHolders[0], utilsForWallet2.wallet.address)
-    assert.equal(newHolders[1], utilsForWallet1.wallet.address)
 
     // check token indices
     assertBigNumberEqual(await contract1.functions.tokenOfOwnerByIndex(utilsForWallet1.wallet.address, 0), BigNumber.from(1), "index of tokenId 1");
