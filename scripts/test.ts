@@ -236,9 +236,48 @@ async function testERC4671Consensus() {
     assertBoolEqual(await contract1.isValid(0), false, "token invalid for address " + account1.wallet.address)
 }
 
+async function testEIPCreatorBadgeDelegate() {
+    const abi = "bin/EIPCreatorBadgeDelegate.abi"
+    const bin = "bin/EIPCreatorBadgeDelegate.bin"
+
+    const contractFactory = account1.getContractFactory(abi, bin)
+    const deployTx = await contractFactory.deploy()
+    console.log("deploy tx hash:", deployTx.deployTransaction.hash)
+
+    const deployedContract = await deployTx.deployed()
+    console.log("contract address:", deployedContract.address)
+
+    const contract1 = new ERC4671(account1.getContract(deployedContract.address, abi))
+    const contract2 = new ERC4671(account2.getContract(deployedContract.address, abi))
+
+    try {
+        console.log("[expecting to fail] minting token for " + account1.wallet.address)
+        await contract2.mint(account1.wallet.address)
+        assert.ok(false)
+    } catch (e) {}
+
+    console.log("delegating minting right to " + account2.wallet.address)
+    await contract1.delegate(account2.wallet.address, account1.wallet.address)
+
+    console.log("minting token for " + account1.wallet.address)
+    await contract2.mint(account1.wallet.address)
+
+    console.log("verifying balance")
+    assertBigNumberEqual(await contract1.balanceOf(account1.wallet.address), BigNumber.from(1), "token minted for address " + account1.wallet.address)
+    assertBigNumberEqual(await contract1.tokenOfOwnerByIndex(account1.wallet.address, 0), BigNumber.from(0), "tokenId for address " + account1.wallet.address)
+    assertStringEqual(await contract1.issuerOf(0), account2.wallet.address, "issuer is " + account2.wallet.address)
+
+    try {
+        console.log("[expecting to fail] minting token for " + account1.wallet.address)
+        await contract2.mint(account1.wallet.address)
+        assert.ok(false)
+    } catch (e) {}
+}
+
 try {
     Promise.resolve()
     .then(testEIPCreatorBadge)
+    .then(testEIPCreatorBadgeDelegate)
     .then(testERC4671Consensus)
     .then(testERC4671Store)
     .then(disconnect)
