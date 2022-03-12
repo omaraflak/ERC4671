@@ -7,60 +7,98 @@ class ERC4671 {
         this.contract = contract
     }
 
-    private first(data) {
+    private async first(data) {
         return data[0]
     }
 
+    private async wait(tx) {
+        return tx.wait()
+    }
+
     // IERC4671
-    balanceOf(owner: string): Promise<BigNumber> {
+    async balanceOf(owner: string): Promise<BigNumber> {
         return this.contract.functions.balanceOf(owner).then(this.first)
     }
 
-    ownerOf(tokenId: number): Promise<string> {
+    async ownerOf(tokenId: number): Promise<string> {
         return this.contract.functions.ownerOf(tokenId).then(this.first)
     }
 
-    isValid(tokenId: number): Promise<boolean> {
+    async isValid(tokenId: number): Promise<boolean> {
         return this.contract.functions.isValid(tokenId).then(this.first)
     }
 
-    hasValid(owner: string): Promise<boolean> {
+    async hasValid(owner: string): Promise<boolean> {
         return this.contract.functions.hasValid(owner).then(this.first)
     }
 
     // IERC4671Metadata
-    name(): Promise<string> {
+    async name(): Promise<string> {
         return this.contract.functions.name().then(this.first)
     }
 
-    symbol(): Promise<string> {
+    async symbol(): Promise<string> {
         return this.contract.functions.symbol().then(this.first)
     }
 
-    tokenURI(tokenId: number): Promise<string> {
+    async tokenURI(tokenId: number): Promise<string> {
         return this.contract.functions.tokenURI(tokenId).then(this.first)
     }
 
     // IERC4671Enumerable
-    emittedCount(): Promise<BigNumber> {
+    async emittedCount(): Promise<BigNumber> {
         return this.contract.functions.emittedCount().then(this.first)
     }
 
-    holdersCount(): Promise<BigNumber> {
+    async holdersCount(): Promise<BigNumber> {
         return this.contract.functions.holdersCount().then(this.first)
     }
 
-    tokenOfOwnerByIndex(owner: string, index: number): Promise<BigNumber> {
+    async tokenOfOwnerByIndex(owner: string, index: number): Promise<BigNumber> {
         return this.contract.functions.tokenOfOwnerByIndex(owner, index).then(this.first)
     }
 
-    tokenByIndex(index: number): Promise<BigNumber> {
+    async tokenByIndex(index: number): Promise<BigNumber> {
         return this.contract.functions.tokenByIndex(index).then(this.first)
     }
 
     // IERC4671Pull
-    pull(tokenId: number, owner: string, signature: string): Promise<void> {
-        return this.contract.functions.pull(tokenId, owner, signature).then(tx => tx.wait())
+    async pull(tokenId: number, owner: string, signature: string): Promise<void> {
+        return this.contract.functions.pull(tokenId, owner, signature).then(this.wait)
+    }
+
+    // IERC4671Concensus
+    async voters(): Promise<string[]> {
+        return this.contract.functions.voters().then(this.first)
+    }
+
+    async approveMint(owner: string): Promise<void> {
+        return this.contract.functions.approveMint(owner).then(this.wait)
+    }
+
+    async approveRevoke(tokenId: number): Promise<void> {
+        return this.contract.functions.approveRevoke(tokenId).then(this.wait)
+    }
+
+    // IERC4671Delegate
+    async delegate(operator: string, owner: string): Promise<void> {
+        return this.contract.functions.delegate(operator, owner).then(this.wait)
+    }
+
+    async delegateBatch(operators: string[], owners: string[]): Promise<void> {
+        return this.contract.functions.delegateBatch(operators, owners).then(this.wait)
+    }
+
+    async mint(owner: string): Promise<void> {
+        return this.contract.functions.mint(owner).then(this.wait)
+    }
+
+    async mintBatch(owners: string[]): Promise<void> {
+        return this.contract.functions.mintBatch(owners).then(this.wait)
+    }
+
+    async issuerOf(tokenId: number): Promise<string> {
+        return this.contract.functions.issuerOf(tokenId).then(this.first)
     }
 }
 
