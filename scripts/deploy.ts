@@ -1,7 +1,6 @@
-import { utilsForWallet1 } from "./utils"
-const { getContractFactory } = utilsForWallet1
+import { account1 } from "./accounts"
 
-const contractFactory = getContractFactory("bin/EIPCreatorBadge.abi", "bin/EIPCreatorBadge.bin")
+const contractFactory = account1.getContractFactory("bin/EIPCreatorBadge.abi", "bin/EIPCreatorBadge.bin")
 
 contractFactory.deploy().then(contract => {
     console.log("tx hash:", contract.deployTransaction.hash)
