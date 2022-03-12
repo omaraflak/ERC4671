@@ -2,11 +2,12 @@ import * as fs from "fs"
 import { ethers } from "ethers"
 
 class Utils {
+    provider: ethers.providers.WebSocketProvider
     wallet: ethers.Wallet
 
-    constructor(provider: string, privateKey: string) {
-        const ws = new ethers.providers.WebSocketProvider(provider)
-        this.wallet = new ethers.Wallet(privateKey, ws)
+    constructor(provider: ethers.providers.WebSocketProvider, privateKey: string) {
+        this.provider = provider
+        this.wallet = new ethers.Wallet(privateKey, this.provider)
     }
 
     getABI(abi: string) {
