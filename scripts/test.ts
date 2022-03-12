@@ -80,16 +80,12 @@ const main = async () => {
     assertBoolEqual(await contract1.isValid(1), false, "token 1 is invalid")
 
     // tokenId, owner, recipient
-    const messageHash = ethers.utils.solidityKeccak256(
-        ["uint256", "address", "address"],
-        [1, account2.wallet.address, account1.wallet.address]
-    )
-    const messageHashBinary = ethers.utils.arrayify(messageHash)
-    const messageHashSigned = await account2.wallet.signMessage(messageHashBinary)
+    const messageToSign = contract1.makePullMessage(1, account2.wallet.address, account1.wallet.address)
+    const messageSigned = await account2.wallet.signMessage(messageToSign)
 
     // transfer token with signature
     console.log("pull token 1 from " + account2.wallet.address + " to " + account1.wallet.address)
-    await contract1.pull(1, account2.wallet.address, messageHashSigned)
+    await contract1.pull(1, account2.wallet.address, messageSigned)
 
     // check balances and counts
     assertBigNumberEqual(await contract1.balanceOf(account1.wallet.address), BigNumber.from(1), "balance of " + account1.wallet.address)
@@ -108,17 +104,13 @@ const main = async () => {
     assertBigNumberEqual(await contract1.tokenOfOwnerByIndex(account2.wallet.address, 1), BigNumber.from(2), "index of tokenId 1");
 
     // transfer back token 1
-    const messageHash2 = ethers.utils.solidityKeccak256(
-        ["uint256", "address", "address"],
-        [1, account1.wallet.address, account2.wallet.address]
-    )
-    const messageHashBinary2 = ethers.utils.arrayify(messageHash2)
-    const messageHashSigned2 = await account1.wallet.signMessage(messageHashBinary2)
+    const messageToSign2 = contract1.makePullMessage(1, account1.wallet.address, account2.wallet.address)
+    const messageSigned2 = await account1.wallet.signMessage(messageToSign2)
 
     // transfer token with signature
     console.log("pull token 1 from " + account1.wallet.address + " to " + account2.wallet.address)
     const contract2 = new ERC4671(account2.getContract(deployedContract.address, abi))
-    await contract2.pull(1, account1.wallet.address, messageHashSigned2)
+    await contract2.pull(1, account1.wallet.address, messageSigned2)
 
     // check balances and counts
     assertBigNumberEqual(await contract1.balanceOf(account1.wallet.address), BigNumber.from(0), "balance of " + account1.wallet.address)

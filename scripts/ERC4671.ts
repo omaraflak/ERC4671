@@ -59,6 +59,14 @@ class ERC4671 {
         return this.contract.functions.pull(tokenId, owner, signature).then(this.wait)
     }
 
+    makePullMessage(tokenId: number, owner: string, recipient: string): Uint8Array {
+        const messageHash = ethers.utils.solidityKeccak256(
+            ["uint256", "address", "address"],
+            [tokenId, owner, recipient]
+        )
+        return ethers.utils.arrayify(messageHash)
+    }
+
     // IERC4671Concensus
     async voters(): Promise<string[]> {
         return this.contract.functions.voters().then(this.first)
