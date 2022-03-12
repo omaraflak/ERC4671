@@ -39,7 +39,7 @@ const main = async () => {
     console.log("contract address:", deployedContract.address)
 
     const contract1 = new ERC4671(account1.getContract(deployedContract.address, abi))
-    
+
     // check name, symbol, emittedCount
     assertStringEqual(await contract1.name(), "EIP Creator Badge", "name")
     assertStringEqual(await contract1.symbol(), "EIP", "symbol")
@@ -61,7 +61,7 @@ const main = async () => {
     assertBigNumberEqual(await contract1.tokenOfOwnerByIndex(account2.wallet.address, 0), BigNumber.from(0), "index of tokenId 0");
     assertBigNumberEqual(await contract1.tokenOfOwnerByIndex(account2.wallet.address, 1), BigNumber.from(1), "index of tokenId 1");
     assertBigNumberEqual(await contract1.tokenOfOwnerByIndex(account2.wallet.address, 2), BigNumber.from(2), "index of tokenId 2");
-    
+
     // check tokens valididity
     assertBoolEqual(await contract1.hasValid(account2.wallet.address), true, account2.wallet.address + " has valid tokens")
     assertBoolEqual(await contract1.isValid(0), true, "token 0 valid")
@@ -74,7 +74,7 @@ const main = async () => {
 
     // check unchanged balance
     assertBigNumberEqual(await contract1.balanceOf(account2.wallet.address), BigNumber.from(3), "balance of " + account2.wallet.address)
-    
+
     // check token has been invalidated
     assertBoolEqual(await contract1.hasValid(account2.wallet.address), true, account2.wallet.address + " has valid tokens")
     assertBoolEqual(await contract1.isValid(1), false, "token 1 is invalid")
@@ -90,7 +90,7 @@ const main = async () => {
     // transfer token with signature
     console.log("pull token 1 from " + account2.wallet.address + " to " + account1.wallet.address)
     await contract1.pull(1, account2.wallet.address, messageHashSigned)
-    
+
     // check balances and counts
     assertBigNumberEqual(await contract1.balanceOf(account1.wallet.address), BigNumber.from(1), "balance of " + account1.wallet.address)
     assertBigNumberEqual(await contract1.balanceOf(account2.wallet.address), BigNumber.from(2), "balance of " + account2.wallet.address)
@@ -119,7 +119,7 @@ const main = async () => {
     console.log("pull token 1 from " + account1.wallet.address + " to " + account2.wallet.address)
     const contract2 = new ERC4671(account2.getContract(deployedContract.address, abi))
     await contract2.pull(1, account1.wallet.address, messageHashSigned2)
-    
+
     // check balances and counts
     assertBigNumberEqual(await contract1.balanceOf(account1.wallet.address), BigNumber.from(0), "balance of " + account1.wallet.address)
     assertBigNumberEqual(await contract1.balanceOf(account2.wallet.address), BigNumber.from(3), "balance of " + account2.wallet.address)
@@ -141,7 +141,7 @@ const main = async () => {
 
     // check has valid
     assertBoolEqual(await contract1.hasValid(account2.wallet.address), false, account2.wallet.address + " has no valid tokens")
-    
+
     // close connections
     disconnect()
 }
