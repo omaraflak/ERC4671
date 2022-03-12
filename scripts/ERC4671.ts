@@ -7,14 +7,6 @@ class ERC4671 {
         this.contract = contract
     }
 
-    private async first(data) {
-        return data[0]
-    }
-
-    private async wait(tx) {
-        return tx.wait()
-    }
-
     // IERC4671
     async balanceOf(owner: string): Promise<BigNumber> {
         return this.contract.functions.balanceOf(owner).then(this.first)
@@ -99,6 +91,14 @@ class ERC4671 {
 
     async issuerOf(tokenId: number): Promise<string> {
         return this.contract.functions.issuerOf(tokenId).then(this.first)
+    }
+
+    private async first(data) {
+        return data[0]
+    }
+
+    private async wait(tx) {
+        return tx.wait()
     }
 }
 
