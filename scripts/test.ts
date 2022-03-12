@@ -1,10 +1,7 @@
 import { strict as assert } from "assert"
-import { ethers, BigNumber } from "ethers"
+import { BigNumber } from "ethers"
 import { account1, account2, disconnect } from "./accounts"
 import { ERC4671 } from "./ERC4671"
-
-const abi = "bin/EIPCreatorBadge.abi"
-const bin = "bin/EIPCreatorBadge.bin"
 
 function assertBigNumberEqual(actual: any, expected: BigNumber, message: string = null) {
     if (message != null) {
@@ -30,7 +27,10 @@ function assertBoolEqual(actual: any, expected: boolean, message: string = null)
     assert.equal(actual, expected)
 }
 
-const main = async () => {
+async function testEIPCreatorBadge() {
+    const abi = "bin/EIPCreatorBadge.abi"
+    const bin = "bin/EIPCreatorBadge.bin"
+
     const contractFactory = account1.getContractFactory(abi, bin)
     const deployTx = await contractFactory.deploy()
     console.log("deploy tx hash:", deployTx.deployTransaction.hash)
@@ -133,13 +133,115 @@ const main = async () => {
 
     // check has valid
     assertBoolEqual(await contract1.hasValid(account2.wallet.address), false, account2.wallet.address + " has no valid tokens")
+}
 
-    // close connections
-    disconnect()
+async function testERC4671Store() {
+    const abi = "bin/ERC4671Store.abi"
+    const bin = "bin/ERC4671Store.bin"
+
+    const contractFactory = account1.getContractFactory(abi, bin)
+    const deployTx = await contractFactory.deploy()
+    console.log("deploy tx hash:", deployTx.deployTransaction.hash)
+
+    const deployedContract = await deployTx.deployed()
+    console.log("contract address:", deployedContract.address)
+
+    console.log("adding contracts to address " + account1.wallet.address)
+    const contract1 = account1.getContract(deployedContract.address, abi)
+    await (await contract1.functions.add("0x907627314396174746b939C6Dd365e43e0F00FE0")).wait()
+    await (await contract1.functions.add("0xABF606Ad4BA27cfa07202FD90f0a472e85564D05")).wait()
+
+    console.log("adding contracts to address " + account2.wallet.address)
+    const contract2 = account2.getContract(deployedContract.address, abi)
+    await (await contract2.functions.add("0xABF606Ad4BA27cfa07202FD90f0a472e85564D05")).wait()
+
+    console.log("getting contracts for address " + account1.wallet.address)
+    const addresses1 = await contract1.functions.get(account1.wallet.address).then(d => d[0])
+    assert.ok(addresses1 instanceof Array)
+    assert.equal(addresses1.length, 2)
+    assert.equal(addresses1[0], "0x907627314396174746b939C6Dd365e43e0F00FE0")
+    assert.equal(addresses1[1], "0xABF606Ad4BA27cfa07202FD90f0a472e85564D05")
+
+    console.log("getting contracts for address " + account2.wallet.address)
+    const addresses2 = await contract1.functions.get(account2.wallet.address).then(d => d[0])
+    assert.ok(addresses2 instanceof Array)
+    assert.equal(addresses2.length, 1)
+    assert.equal(addresses2[0], "0xABF606Ad4BA27cfa07202FD90f0a472e85564D05")
+
+    console.log("removing contracts")
+    await (await contract1.functions.remove("0x907627314396174746b939C6Dd365e43e0F00FE0")).wait()
+    await (await contract2.functions.remove("0xABF606Ad4BA27cfa07202FD90f0a472e85564D05")).wait()
+
+    console.log("checking new contracts for address " + account1.wallet.address)
+    const newAddresses1 = await contract1.functions.get(account1.wallet.address).then(d => d[0])
+    assert.ok(newAddresses1 instanceof Array)
+    assert.equal(newAddresses1.length, 1)
+    assert.equal(newAddresses1[0], "0xABF606Ad4BA27cfa07202FD90f0a472e85564D05")
+
+    console.log("checking new contracts for address " + account2.wallet.address)
+    const newAddresses2 = await contract1.functions.get(account2.wallet.address).then(d => d[0])
+    assert.ok(newAddresses2 instanceof Array)
+    assert.equal(newAddresses2.length, 0)
+}
+
+async function testERC4671Consensus() {
+    const abi = "bin/ERC4671Consensus.abi"
+    const bin = "bin/ERC4671Consensus.bin"
+
+    const contractFactory = account1.getContractFactory(abi, bin)
+    const deployTx = await contractFactory.deploy(
+        "Consensus",
+        "NTTC",
+        [
+            account1.wallet.address,
+            account2.wallet.address
+        ]
+    )
+    console.log("deploy tx hash:", deployTx.deployTransaction.hash)
+
+    const deployedContract = await deployTx.deployed()
+    console.log("contract address:", deployedContract.address)
+
+    const contract1 = new ERC4671(account1.getContract(deployedContract.address, abi))
+    const contract2 = new ERC4671(account2.getContract(deployedContract.address, abi))
+
+    assertStringEqual(await contract1.name(), "Consensus", "name")
+    assertStringEqual(await contract1.symbol(), "NTTC", "symbol")
+
+    console.log("checking voters")
+    const voters = await contract1.voters()
+    assert.equal(voters.length, 2)
+    assertStringEqual(voters[0], account1.wallet.address, "first voter")
+    assertStringEqual(voters[1], account2.wallet.address, "second voter")
+
+    console.log("first approve mint for address " + account1.wallet.address)
+    await contract1.approveMint(account1.wallet.address)
+
+    assertBigNumberEqual(await contract1.balanceOf(account1.wallet.address), BigNumber.from(0), "no token for address " + account1.wallet.address)
+
+    console.log("second approve mint for address " + account1.wallet.address)
+    await contract2.approveMint(account1.wallet.address)
+
+    assertBigNumberEqual(await contract1.balanceOf(account1.wallet.address), BigNumber.from(1), "token minted for address " + account1.wallet.address)
+    assertBigNumberEqual(await contract1.tokenOfOwnerByIndex(account1.wallet.address, 0), BigNumber.from(0), "tokenId")
+
+    console.log("first revoke of token for address " + account1.wallet.address)
+    await contract1.approveRevoke(0)
+
+    assertBoolEqual(await contract1.isValid(0), true, "token valid for address " + account1.wallet.address)
+
+    console.log("second revoke of token for address " + account1.wallet.address)
+    await contract2.approveRevoke(0)
+
+    assertBoolEqual(await contract1.isValid(0), false, "token invalid for address " + account1.wallet.address)
 }
 
 try {
-    main()
+    Promise.resolve()
+    .then(testEIPCreatorBadge)
+    .then(testERC4671Consensus)
+    .then(testERC4671Store)
+    .then(disconnect)
 } catch (e) {
     console.log(e)
 }
