@@ -200,7 +200,19 @@ abstract contract ERC4671 is IERC4671, IERC4671Metadata, IERC4671Enumerable, ERC
     /// @param tokenId Token identifier to remove
     function _removeToken(uint256 tokenId) internal virtual {
         Token storage token = _getTokenOrRevert(tokenId);
-        _removeFromUnorderedArray(_indexedTokenIds[token.owner], _tokenIdIndex[token.owner][tokenId]);
+
+        uint256 index = _tokenIdIndex[token.owner][tokenId];
+        require(index < _indexedTokenIds[token.owner].length, "Trying to delete out of bound index");
+
+        if (index != _indexedTokenIds[token.owner].length - 1) {
+            uint256 newTokenId = _indexedTokenIds[token.owner][_indexedTokenIds[token.owner].length - 1];
+            _indexedTokenIds[token.owner][index] = newTokenId;
+            _tokenIdIndex[token.owner][newTokenId] = index;
+        }
+
+        _indexedTokenIds[token.owner].pop();
+        delete _tokenIdIndex[token.owner][tokenId];
+
         if (_indexedTokenIds[token.owner].length == 0) {
             assert(_holdersCount > 0);
             _holdersCount -= 1;
