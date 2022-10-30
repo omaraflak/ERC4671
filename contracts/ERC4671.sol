@@ -223,15 +223,4 @@ abstract contract ERC4671 is IERC4671, IERC4671Metadata, IERC4671Enumerable, ERC
         }
         delete _tokens[tokenId];
     }
-
-    /// @notice Removes an entry in an array by its index
-    /// @param array Array for which to remove the entry
-    /// @param index Index of the entry to remove
-    function _removeFromUnorderedArray(uint256[] storage array, uint256 index) internal {
-        require(index < array.length, "Trying to delete out of bound index");
-        if (index != array.length - 1) {
-            array[index] = array[array.length - 1];
-        }
-        array.pop();
-    }
 }
