@@ -200,7 +200,19 @@ abstract contract ERC4671 is IERC4671, IERC4671Metadata, IERC4671Enumerable, ERC
     /// @param tokenId Token identifier to remove
     function _removeToken(uint256 tokenId) internal virtual {
         Token storage token = _getTokenOrRevert(tokenId);
-        _removeFromUnorderedArray(_indexedTokenIds[token.owner], _tokenIdIndex[token.owner][tokenId]);
+
+        uint256 index = _tokenIdIndex[token.owner][tokenId];
+        require(index < _indexedTokenIds[token.owner].length, "Trying to delete out of bound index");
+
+        if (index != _indexedTokenIds[token.owner].length - 1) {
+            uint256 newTokenId = _indexedTokenIds[token.owner][_indexedTokenIds[token.owner].length - 1];
+            _indexedTokenIds[token.owner][index] = newTokenId;
+            _tokenIdIndex[token.owner][newTokenId] = index;
+        }
+
+        _indexedTokenIds[token.owner].pop();
+        delete _tokenIdIndex[token.owner][tokenId];
+
         if (_indexedTokenIds[token.owner].length == 0) {
             assert(_holdersCount > 0);
             _holdersCount -= 1;
@@ -210,16 +222,5 @@ abstract contract ERC4671 is IERC4671, IERC4671Metadata, IERC4671Enumerable, ERC
             _numberOfValidTokens[token.owner] -= 1;
         }
         delete _tokens[tokenId];
-    }
-
-    /// @notice Removes an entry in an array by its index
-    /// @param array Array for which to remove the entry
-    /// @param index Index of the entry to remove
-    function _removeFromUnorderedArray(uint256[] storage array, uint256 index) internal {
-        require(index < array.length, "Trying to delete out of bound index");
-        if (index != array.length - 1) {
-            array[index] = array[array.length - 1];
-        }
-        array.pop();
     }
 }
